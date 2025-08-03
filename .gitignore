@@ -1,0 +1,13 @@
+# Python-generated files
+__pycache__/
+
+node_modules/
+
+# Virtual environments
+.venv
+
+.env
+
+db.sqlite3
+db.sqlite3-shm
+db.sqlite3-wal

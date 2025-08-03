@@ -1,0 +1,27 @@
+{% if error %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ error }}
+    <button
+      title="Fechar"
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+    ></button>
+  </div>
+{% endif %}
+{% set message = get_flashed_message(request) %}
+
+{% if message %}
+  <div
+    class="alert alert-{{ message.category }} alert-dismissible fade show"
+    role="alert"
+  >
+    {{ message.message }}
+    <button
+      title="Fechar"
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+    ></button>
+  </div>
+{% endif %}

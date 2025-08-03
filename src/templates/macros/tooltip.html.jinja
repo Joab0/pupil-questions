@@ -1,0 +1,17 @@
+{% from 'macros/icon.html.jinja' import icon %}
+
+{% macro tooltip(question_id, text) %}
+  <span id="{{ question_id }}" style="cursor: help;">
+    {{ icon("question-circle") }}
+  </span>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      tippy("#{{ question_id }}", {
+        content: "{{ text }}",
+        theme: "material",
+        placement: "top",
+        interactive: true,
+      });
+    });
+  </script>
+{% endmacro %}

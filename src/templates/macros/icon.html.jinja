@@ -1,0 +1,6 @@
+{# Bootstrap icons wrapper #}
+{% macro icon(name, class_name="") %}
+  <i
+    class="bi bi-{{ name }} {% if class_name %}{{ class_name|trim }}{% endif %}"
+  ></i>
+{% endmacro %}

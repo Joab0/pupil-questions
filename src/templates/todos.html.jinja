@@ -1,0 +1,54 @@
+{% extends 'components/layout.html.jinja' %}
+{% from 'macros/icon.html.jinja' import icon %}
+
+{% block content %}
+  <h2 class="mb-3">Lista de Tarefas</h2>
+
+  <form action="{{ url_for('post_todos') }}" method="post">
+    <div class="mb-3">
+      <div class="d-flex flex-md-row flex-column gap-2">
+        <input
+          type="text"
+          id="task"
+          name="task"
+          class="form-control"
+          minlength="2"
+          maxlength="255"
+          placeholder="Digite uma tarefa"
+          required
+        />
+        <button type="submit" class="btn btn-primary">Adicionar</button>
+      </div>
+    </div>
+  </form>
+
+  <ul class="list-group">
+    {% for todo in todos %}
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <div class="d-flex align-items-center gap-2">
+          <form action="{{ url_for('toggle_todo', id=todo.id) }}" method="post">
+            <button
+              type="submit"
+              class="btn btn-sm {% if todo.done %}btn-success{% else %}btn-outline-secondary{% endif %}"
+            >
+              {{ icon("check-circle-fill" if todo.checked else "circle", "text-success" if todo.checked else "") }}
+            </button>
+          </form>
+          <span
+            class="{% if todo.done %}text-decoration-line-through text-muted{% endif %}"
+          >
+            {{ todo.task }}
+          </span>
+        </div>
+
+        <form action="{{ url_for('delete_todo', id=todo.id) }}" method="post">
+          <button type="submit" class="btn btn-sm btn-danger">
+            {{ icon('trash') }}
+          </button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
