@@ -4,13 +4,18 @@ version = "0.1.0"
 description = "Questions with AI"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = ["django>=5.2.6", "django-environ>=0.12.0"]
+dependencies = [
+    "django>=5.2.6",
+    "django-environ>=0.12.0",
+    "django-filter>=25.1",
+    "djangorestframework>=3.16.1",
+    "markdown>=3.9",
+]
 
 
 [tool.ruff]
 line-length = 100
 indent-width = 4
-
 target-version = "py312"
 
 [tool.ruff.lint]
@@ -46,11 +51,6 @@ line-ending = "auto"
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F403"]
-
-[tool.aerich]
-tortoise_orm = "src.database.config.TORTOISE_ORM"
-location = "./migrations"
-src_folder = "./."
 
 [tool.pyright]
 typeCheckingMode = "standard"
