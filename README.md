@@ -1,7 +1,17 @@
-# Pupil Questions
+<p align="center">
+  <img src="src/static/logo-nav.png" alt="Logo" width="200"/>
+</p>
 
-⚠️ O projeto está em desenvolvimento inicial e pode sofrer alterações significativas.
+Pupil Questions é uma ferramenta para estudar usando IA
 
-O Pupil Questions é uma aplicação web para questões.
+> [!NOTE]
+> 📚 Este projeto tem caráter **acadêmico** e foi desenvolvido apenas para fins de estudo e demonstração.
 
-Teste online: <https://pupilquestions.joab.dev/>
+---
+
+**Teste online:** <https://pupilquestions.joab.dev/>
+
+---
+
+> [!WARNING]
+> O projeto está em desenvolvimento inicial e pode sofrer alterações significativas.
