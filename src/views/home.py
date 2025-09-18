@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, Request
 
 from ..deps import CurrentUser
@@ -12,5 +11,5 @@ async def home(request: Request, user: CurrentUser):
     return templates.TemplateResponse(
         request=request,
         name="home.html.jinja",
-        context={"user": user},
+        context={"title": "Página inicial", "user": user},
     )

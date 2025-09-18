@@ -1,0 +1,262 @@
+{% extends 'components/layout.html.jinja' %}
+{% from 'macros/icon.html.jinja' import icon %}
+
+{% block content %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('home') }}">Inicio</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('get_topics') }}">Questões</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('get_topic', id=topic.id) }}">{{ topic.name }}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Editar</li>
+    </ol>
+  </nav>
+
+  <h2>Editar Questões</h2>
+
+  {# Update name and description form #}
+  <div class="mb-3">
+    <form action="{{ url_for('post_edit_topic', id=topic.id) }}" method="post">
+      <div class="mb-3">
+        <label for="topic-name" class="form-label">Tópico</label>
+        <input
+          type="text"
+          name="name"
+          id="topic-name"
+          class="form-control"
+          maxlength="100"
+          minlength="2"
+          placeholder="O nome do tópico"
+          value="{{ topic.name }}"
+          autocomplete="on"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="topic-description" class="form-label"
+          >Descrição (opcional)</label
+        >
+        <textarea
+          type="text"
+          name="description"
+          id="topic-description"
+          class="form-control"
+          minlength="10"
+          maxlength="2048"
+          rows="3"
+          placeholder="Descreva brevemente o conteúdo ou objetivo deste tópico"
+        >
+  {{ topic.description }}</textarea
+        >
+      </div>
+
+      <button type="submit" class="btn btn-success">Salvar</button>
+    </form>
+  </div>
+
+  {# Edit questions #}
+
+  <div class="mb-3">
+    <div class="row g-3">
+      {% for question in topic.questions %}
+        <div class="col-12 col-lg-6">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <form
+                action="{{ url_for('edit_question', id=question.id) }}"
+                method="post"
+                id="edit-question-{{ question.id }}"
+              >
+                <div class="mb-3">
+                  <label
+                    class="form-label"
+                    for="question-text-{{ question.id }}"
+                  >
+                    Enunciado da questão
+                  </label>
+                  <textarea
+                    id="question-text-{{ question.id }}"
+                    name="question_text"
+                    class="form-control"
+                    rows="2"
+                    placeholder="Ex.: Qual protocolo opera na camada de enlace do modelo OSI?"
+                    required
+                  >
+{{ question.question_text }}</textarea
+                  >
+                </div>
+
+                {% for key, option in question.options.items() %}
+                  <div class="mb-2">
+                    <label
+                      for="option-{{ key }}-{{ question.id }}"
+                      class="form-label"
+                      >Alternativa {{ key }}</label
+                    >
+                    <input
+                      type="text"
+                      name="option_{{ key|lower }}"
+                      id="option-{{ key }}-{{ question.id }}"
+                      class="form-control"
+                      value="{{ option }}"
+                      maxlength="1024"
+                      required
+                    />
+                  </div>
+                {% endfor %}
+
+                <div class="mb-2">
+                  <label
+                    for="correct-answer-{{ question.id }}"
+                    class="form-label"
+                    >Letra correta</label
+                  >
+                  <select
+                    name="correct_answer"
+                    class="form-select"
+                    id="correct-answer-{{ question.id }}"
+                  >
+                    {% for key, option in question.options.items() %}
+                      <option
+                        value="{{ key }}"
+                        {% if question.correct_answer == key %}selected{% endif %}
+                      >
+                        {{ key }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="explanation-{{ question.id }}" class="form-label"
+                    >Explicação</label
+                  >
+                  <textarea
+                    name="explanation"
+                    class="form-control"
+                    id="explanation-{{ question.id }}"
+                    rows="3"
+                    maxlength="1024"
+                    required
+                  >
+{{ question.explanation }}</textarea
+                  >
+                </div>
+              </form>
+
+              <form
+                action="{{ url_for('delete_question', id=question.id) }}"
+                method="post"
+                id="delete-question-{{ question.id }}"
+              ></form>
+
+              <div class="d-flex gap-2">
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  form="edit-question-{{ question.id }}"
+                >
+                  Salvar
+                </button>
+
+                <button
+                  type="submit"
+                  class="btn btn-danger"
+                  form="delete-question-{{ question.id }}"
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+      {# Add new question #}
+      <div class="col-12 col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <form
+              action="{{ url_for('create_question', id=topic.id) }}"
+              method="post"
+            >
+              <div class="mb-3">
+                <label class="form-label" for="question-text">
+                  Enunciado da questão
+                </label>
+                <textarea
+                  id="question-text"
+                  name="question_text"
+                  class="form-control"
+                  rows="2"
+                  placeholder="Ex.: Quanto é 1+1?"
+                  required
+                ></textarea>
+              </div>
+
+              {% for key in ["a", "b", "c", "d"] %}
+                <div class="mb-2">
+                  <label for="add-question-option-{{ key }}" class="form-label"
+                    >Alternativa {{ key|upper }}</label
+                  >
+                  <input
+                    type="text"
+                    name="option_{{ key }}"
+                    id="add-question-option-{{ key }}"
+                    class="form-control"
+                    maxlength="1024"
+                    required
+                  />
+                </div>
+              {% endfor %}
+
+              <div class="mb-2">
+                <label for="correct-answer" class="form-label"
+                  >Letra correta</label
+                >
+                <select
+                  name="correct_answer"
+                  id="correct-answer"
+                  class="form-select"
+                >
+                  {% for key in ["A", "B", "C", "D"] %}
+                    <option value="{{ key }}">{{ key }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="explanation" class="form-label">Explicação</label>
+                <textarea
+                  name="explanation"
+                  id="explanation"
+                  class="form-control"
+                  rows="3"
+                  required
+                  maxlength="1024"
+                ></textarea>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">
+                  Adicionar Questão
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# Delete topic #}
+  <form action="{{ url_for('delete_topic', id=topic.id) }}" method="post">
+    <button type="submit" class="btn btn-danger">Excluir Tópico</button>
+  </form>
+{% endblock %}

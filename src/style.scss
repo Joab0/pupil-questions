@@ -1,3 +1,8 @@
-$primary: #013550;
+$primary: #0096ff;
+
+.btn-ai {
+  background: linear-gradient(135deg, $primary, lighten($primary, 15%));
+  color: #fff;
+}
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

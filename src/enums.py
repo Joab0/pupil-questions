@@ -1,6 +1,8 @@
-from enum import IntEnum
+from enum import StrEnum
 
 
-class UserRole(IntEnum):
-    student = 0
-    teacher = 1
+class AIRequestStatus(StrEnum):
+    IDLE = "idle"
+    PENDING = "pending"
+    DONE = "done"
+    ERROR = "error"

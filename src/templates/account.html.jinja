@@ -19,6 +19,21 @@
           <form action="{{ url_for('post_account') }}" method="post">
             <table class="table">
               <tr>
+                <td>ID</td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="user-id"
+                    value="{{ user.id }}"
+                    readonly
+                    disabled
+                    required
+                  />
+                </td>
+              </tr>
+
+              <tr>
                 <td>Nome</td>
                 <td>
                   <input
@@ -66,17 +81,17 @@
                     autocomplete="email"
                     required
                   />
-                </td>
-              </tr>
 
-              <tr>
-                <td>Cargo</td>
-                <td>
-                  {{ "Aluno(a)" if user.role.value == 0 else "Professor(a)" }}
-                  <br />
-                  <small>
-                    <i> Só é possível escolher o cargo na criação da conta. </i>
-                  </small>
+                  {% if user.is_verified %}
+                    <small class="text-success">
+                      {{ icon("check") }}E-mail verificado</small
+                    >
+                  {% else %}
+                    <small class="text-warning">
+                      {{ icon("exclamation-triangle-fill") }}E-mail não
+                      verificado</small
+                    >
+                  {% endif %}
                 </td>
               </tr>
             </table>
@@ -102,6 +117,8 @@
                 id="password"
                 name="password"
                 placeholder="Digite sua senha atual"
+                autocomplete="current-password"
+                required
               />
             </div>
 
@@ -114,6 +131,7 @@
                 name="new_password"
                 minlength="8"
                 placeholder="Digite a nova senha"
+                required
               />
             </div>
 
@@ -127,7 +145,8 @@
                 id="confirm-new-password"
                 name="confirm_new_password"
                 minlength="8"
-                placeholder="Confirme  a nova senha"
+                placeholder="Confirme a nova senha"
+                required
               />
             </div>
 

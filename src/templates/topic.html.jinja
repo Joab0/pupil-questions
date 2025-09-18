@@ -1,0 +1,198 @@
+{% extends 'components/layout.html.jinja' %}
+{% from 'macros/icon.html.jinja' import icon %}
+
+{% block content %}
+  {# Generate questions with IA modal #}
+  <div
+    class="modal fade"
+    id="generate-questions-modal"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">Gerar Questões com IA</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <form
+            action="{{ url_for('generate_topic_questions', id=topic.id) }}"
+            method="post"
+            id="generate-questions-form"
+          >
+            <div class="mb-3">
+              <label for="topic-details" class="form-label">Detalhes</label>
+              <textarea
+                type="text"
+                name="details"
+                id="topic-details"
+                class="form-control"
+                minlength="10"
+                maxlength="2048"
+                rows="3"
+                placeholder="Ex: Gere questões sobre redes de computadores para nível iniciante"
+              >
+{{ topic.details or topic.description }}</textarea
+              >
+            </div>
+
+            <div class="mb-3">
+              <label for="questions-count" class="form-label"
+                >Número de questões</label
+              >
+              <input
+                type="number"
+                name="count"
+                id="questions-count"
+                class="form-control"
+                min="1"
+                max="10"
+                value="5"
+                placeholder="Número de questões"
+              />
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fechar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-ai"
+            form="generate-questions-form"
+          >
+            {{ icon('stars') }}Gerar Questões
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('home') }}">Inicio</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('get_topics') }}">Questões</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ topic.name }}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>{{ topic.name }}</h2>
+    <a class="btn btn-primary" href="{{ url_for('edit_topic', id=topic.id) }}"
+      >{{ icon('pencil') }}Editar</a
+    >
+  </div>
+
+  {% if topic.description %}
+    <p>{{ topic.description }}</p>
+  {% endif %}
+
+  {% if topic.ai_status == "pending" %}
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Gerando questões...</span>
+      </div>
+      <p class="mt-3 text-center">
+        As questões estão sendo geradas, aguarde...
+        <br />
+        <span class="text-muted">
+          Esta pagina será atualizada automaticamente
+        </span>
+      </p>
+    </div>
+    <script>
+      setTimeout(() => location.reload(), 5000);
+    </script>
+  {% elif not topic.questions %}
+    <p>
+      Este tópico ainda não possui questões. Clique em Editar para adicioná-las
+      manualmente ou use o botão abaixo para gerá-las automaticamente com
+      inteligência artificial.
+    </p>
+    <div class="text-center">
+      <button
+        class="btn btn-ai"
+        data-bs-toggle="modal"
+        data-bs-target="#generate-questions-modal"
+      >
+        {{ icon('stars') }}Gerar Questões com IA
+      </button>
+    </div>
+  {% else %}
+    <div class="row g-3">
+      {% for question in topic.questions %}
+        <div class="col-12 col-lg-6">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ loop.index }}. {{ question.question_text }}
+              </h5>
+
+              <div class="list-group">
+                {% for key, option in question.options.items() %}
+                  <label class="list-group-item">
+                    <input
+                      class="form-check-input me-1"
+                      type="radio"
+                      name="q{{ question.id }}"
+                      value="{{ key }}"
+                    />
+                    {{ key }}. {{ option }}
+                  </label>
+                {% endfor %}
+              </div>
+
+              <div class="accordion mt-2" id="e{{ question.id }}">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse-{{ question.id }}"
+                      aria-expanded="false"
+                      aria-controls="collapse-{{ question.id }}"
+                    >
+                      Mostrar Resposta
+                    </button>
+                  </h2>
+
+                  <div
+                    id="collapse-{{ question.id }}"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#e{{ question.id }}"
+                  >
+                    <div class="accordion-body">
+                      <strong>Letra {{ question.correct_answer|upper }}</strong>
+                      <br />
+                      {{ question.explanation }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,10 +1,12 @@
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
+from uuid import uuid4
 
 from fastapi import APIRouter, Form, Request, status
 from fastapi.responses import RedirectResponse
+from pydantic import EmailStr
 
 from ..database.models import User
-from ..enums import UserRole
 from ..flash import flash
 from ..security import hash_password, verify_password
 from ..templates import templates
@@ -44,10 +46,9 @@ async def post_register(
     request: Request,
     name: Annotated[str, Form(min_length=2)],
     last_name: Annotated[str, Form(min_length=2)],
-    email: Annotated[str, Form(pattern=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")],
+    email: Annotated[EmailStr, Form()],
     password: Annotated[str, Form()],
     confirm_password: Annotated[str, Form()],
-    role: Annotated[UserRole, Form()],
 ):
     if await User.exists(email=email):
         flash(request, "Já existe um usuário com este e-mail")
@@ -71,11 +72,17 @@ async def post_register(
         last_name=last_name,
         email=email,
         password=hash_password(password),
-        role=role,
+        verification_code=uuid4(),
+        verification_expires_at=datetime.now(timezone.utc) + timedelta(days=1),
     )
 
     request.session["user_id"] = user.id
-
+    flash(
+        request,
+        f"Um e-mail de confirmação foi enviado para {user.email}.\n"
+        "Verifique sua caixa de entrada e siga as instruções para ativar sua conta.",
+        "warning",
+    )
     return RedirectResponse(request.url_for("home"), status.HTTP_303_SEE_OTHER)
 
 

@@ -15,5 +15,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     DATABASE_URL: AnyUrl
 
+    DEEPSEEK_API_KEY: str
+
 
 settings = Settings()  # pyright: ignore[reportCallIssue]

@@ -23,8 +23,8 @@
     }
   </style>
   <nav class="nav flex-column">
-    {{ nav_link('house-door ', "Inicio", "home") }}
-    {{ nav_link('list-task ', "Lista de Tarefas", "get_todos") }}
+    {{ nav_link('house-door', "Inicio", "home") }}
+    {{ nav_link('journal-text', "Suas Questões", "get_topics") }}
   </nav>
 {% endmacro %}
 
@@ -33,7 +33,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ title if title else "PupilClass" }}</title>
+    <title>{{ title if title else "Pupil Questions" }}</title>
     <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}" />
     <link
       rel="shortcut icon"
@@ -76,40 +76,46 @@
           <img src="{{ url_for('static', path='logo-nav.png') }}" width="128" />
         </a>
 
-        <div class="dropdown ms-auto">
-          <a
-            href="#"
-            class="d-flex align-items-center text-decoration-none dropdown-toggle"
-            id="userDropdown"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <img
-              src="https://avatar.iran.liara.run/username?username={{ user.full_name }}"
-              alt="avatar"
-              width="32"
-              height="32"
-              class="rounded-circle"
-            />
-          </a>
-          <ul
-            class="dropdown-menu dropdown-menu-end text-small"
-            aria-labelledby="userDropdown"
-          >
-            <li>
-              <a class="dropdown-item" href="{{ url_for('get_account') }}"
-                >Gerenciar conta</a
-              >
-            </li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-              <a
-                class="dropdown-item text-danger"
-                href="{{ url_for('logout') }}"
-                >Sair</a
-              >
-            </li>
-          </ul>
+        <div class="d-flex align-items-center gap-2">
+          <span id="theme-toggle" role="button" class="fs-4">
+            <i class="bi" id="theme-icon"></i>
+          </span>
+
+          <div class="dropdown ms-auto">
+            <a
+              href="#"
+              class="d-flex align-items-center text-decoration-none dropdown-toggle"
+              id="userDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <img
+                src="https://ui-avatars.com/api/?name={{ user.full_name|urlencode }}&background=random&color=fff"
+                alt="avatar"
+                width="32"
+                height="32"
+                class="rounded-circle"
+              />
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end text-small"
+              aria-labelledby="userDropdown"
+            >
+              <li>
+                <a class="dropdown-item" href="{{ url_for('get_account') }}"
+                  >Gerenciar conta</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a
+                  class="dropdown-item text-danger"
+                  href="{{ url_for('logout') }}"
+                  >Sair</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </nav>
@@ -157,4 +163,31 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   </body>
+  <script>
+    const html = document.documentElement;
+    const icon = document.getElementById("theme-icon");
+    const toggle = document.getElementById("theme-toggle");
+
+    const icons = {
+      light: "bi-moon-fill",
+      dark: "bi-sun-fill",
+    };
+
+    function applyTheme(theme) {
+      html.setAttribute("data-bs-theme", theme);
+      icon.className = `bi ${icons[theme]}`;
+      localStorage.setItem("theme", theme);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      applyTheme(savedTheme);
+    });
+
+    toggle.addEventListener("click", () => {
+      const currentTheme = html.getAttribute("data-bs-theme");
+      const newTheme = currentTheme === "light" ? "dark" : "light";
+      applyTheme(newTheme);
+    });
+  </script>
 </html>

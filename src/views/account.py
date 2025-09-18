@@ -1,7 +1,10 @@
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
+from uuid import uuid4
 
 from fastapi import APIRouter, Form, Request, status
 from fastapi.responses import RedirectResponse
+from pydantic import EmailStr
 
 from ..deps import CurrentUser
 from ..flash import flash
@@ -13,10 +16,14 @@ router = APIRouter()
 
 @router.get("/account")
 async def get_account(request: Request, user: CurrentUser):
+    if not user.is_verified:
+        flash(
+            request, "Você precisa verificar seu endereço de e-mail para usar sua conta.", "warning"
+        )
     return templates.TemplateResponse(
         request=request,
         name="account.html.jinja",
-        context={"user": user},
+        context={"title": "Sua conta", "user": user},
     )
 
 
@@ -26,13 +33,19 @@ async def post_account(
     user: CurrentUser,
     name: Annotated[str, Form(min_length=2)],
     last_name: Annotated[str, Form(min_length=2)],
-    email: Annotated[str, Form(pattern=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")],
+    email: Annotated[EmailStr, Form()],
 ):
     name = name
     last_name = last_name
 
     user.name = name
     user.last_name = last_name
+
+    if email != user.email:
+        user.verification_code = uuid4()
+        user.verification_expires_at = datetime.now(timezone.utc) + timedelta(days=1)
+        user.is_verified = False
+
     user.email = email
 
     await user.save()

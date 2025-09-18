@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
+from tortoise import Tortoise
 
 from .database.models import init_db_models
 from .flash import flash
@@ -11,7 +12,7 @@ from .settings import settings
 from .views.account import router as account_router
 from .views.auth import router as auth_router
 from .views.home import router as home_router
-from .views.todo import router as todo_router
+from .views.topics import router as topics_router
 
 
 @asynccontextmanager
@@ -19,6 +20,7 @@ async def lifespan(app: FastAPI):
     # Init db
     await init_db_models()
     yield
+    await Tortoise.close_connections()
 
 
 app = FastAPI(
@@ -36,8 +38,8 @@ app.add_middleware(
 # Routes setup
 app.include_router(auth_router)
 app.include_router(home_router)
-app.include_router(todo_router)
 app.include_router(account_router)
+app.include_router(topics_router)
 
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
