@@ -4,6 +4,17 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User
 
 
+@admin.action(description="Ativar conta")
+def set_is_active_to_true(modeladmin, request, queryset):
+    queryset.update(is_active=True)
+
+
+@admin.action(description="Desativar conta")
+def set_is_active_to_false(modeladmin, request, queryset):
+    queryset.update(is_active=False)
+
+
+@admin.register(User)
 class CustomUserAdmin(UserAdmin):
     model = User
     list_display = (
@@ -45,5 +56,4 @@ class CustomUserAdmin(UserAdmin):
         ),
     )
 
-
-admin.site.register(User, CustomUserAdmin)
+    actions = [set_is_active_to_true, set_is_active_to_false]

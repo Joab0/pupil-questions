@@ -15,10 +15,13 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+
         if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser precisa ter is_staff=True.")
+            raise ValueError("Superuser requires is_staff=True.")
+
         if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser precisa ter is_superuser=True.")
+            raise ValueError("Superuser requires is_superuser=True.")
+
         return self.create_user(email, password, **extra_fields)
 
 
@@ -33,7 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField("Sobrenome", max_length=30)
     created_at = models.DateTimeField("Data de criação", auto_now_add=True)
     ip = models.GenericIPAddressField(null=True)
-    updated_at = models.DateTimeField("Última Alteração", auto_now=True)
+    updated_at = models.DateTimeField("Última alteração", auto_now=True)
     is_active = models.BooleanField("Ativo", default=True)
     is_staff = models.BooleanField("Staff", default=False)
 
