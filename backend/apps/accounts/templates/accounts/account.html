@@ -1,0 +1,116 @@
+{% extends "components/layout.html" %}
+{% load icons %}
+{% block content %}
+    <h2 class="mb-3">Sua conta</h2>
+    <p>
+        Bem-vindo(a) a pagina da sua conta. Você poderá ver todos os seus dados
+        pessoais aqui.
+    </p>
+    <div class="row g-3">
+        <div class="col-12 col-md-6">
+            {% comment %} User infos {% endcomment %}
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="m-0">Informaçõoes Pessoais</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{% url "account" %}" method="post">
+                        {% csrf_token %}
+                        <table class="table">
+                            <tr>
+                                <td>Nome</td>
+                                <td>
+                                    <input type="text"
+                                           id="name"
+                                           name="first_name"
+                                           class="form-control"
+                                           placeholder="Nome"
+                                           value="{{ user_update_form.first_name.value }}"
+                                           minlength="2"
+                                           maxlength="30"
+                                           autocomplete="name"
+                                           required />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Sobrenome</td>
+                                <td>
+                                    <input type="text"
+                                           name="last_name"
+                                           id="last_name"
+                                           class="form-control"
+                                           placeholder="Sobrenome"
+                                           value="{{ user_update_form.last_name.value }}"
+                                           minlength="2"
+                                           maxlength="30"
+                                           required />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>E-mail</td>
+                                <td>
+                                    <input type="email"
+                                           id="email"
+                                           name="email"
+                                           class="form-control"
+                                           placeholder="E-mail"
+                                           value="{{ user_update_form.email.value }}"
+                                           autocomplete="email"
+                                           required />
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="submit" name="update_user" class="btn btn-primary w-100">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% comment %} Change password {% endcomment %}
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="m-0">Alterar Senha</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{% url "account" %}" method="post">
+                        {% csrf_token %}
+                        {% comment %} Old password {% endcomment %}
+                        <div class="mb-3">
+                            <label class="form-label" for="password">Senha atual</label>
+                            <input type="password"
+                                   class="form-control"
+                                   id="password"
+                                   name="old_password"
+                                   placeholder="Digite sua senha atual"
+                                   autocomplete="current-password"
+                                   required />
+                        </div>
+                        {% comment %} New password {% endcomment %}
+                        <div class="mb-3">
+                            <label class="form-label" for="password">Nova senha</label>
+                            <input type="password"
+                                   class="form-control"
+                                   id="new-passowrd1"
+                                   name="new_password1"
+                                   minlength="8"
+                                   placeholder="Digite a nova senha"
+                                   required />
+                        </div>
+                        {% comment %} Confirm new password {% endcomment %}
+                        <div class="mb-3">
+                            <label class="form-label" for="password">Confirmar nova senha</label>
+                            <input type="password"
+                                   class="form-control"
+                                   id="new-password2"
+                                   name="new_password2"
+                                   minlength="8"
+                                   placeholder="Confirme a nova senha"
+                                   required />
+                        </div>
+                        <button class="btn btn-primary w-100" name="change_password">Alterar Senha</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
