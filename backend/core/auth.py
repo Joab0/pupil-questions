@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, cast
 
-from apps.users.models import User
+from apps.accounts.models import User
 from django.contrib.auth.backends import ModelBackend
 from django.utils import timezone
 from ipware import get_client_ip
