@@ -1,0 +1,145 @@
+{% load static menu %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="UTF-8" />
+        <meta name="title" content="Pupil Questions">
+        <meta name="description" content="Criar Questões com IA">
+        <meta name="keywords" content="ia, ai, questões, questions, estudar">
+        <meta name="robots" bontent="index, follow">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="language" content="Portuguese">
+        <title>{{ title|default:"Pupil Questions" }}</title>
+        <link rel="stylesheet" href="{% static "style.css" %}" />
+        <link rel="shortcut icon"
+              href="{% static "favicon.ico" %}"
+              type="image/x-icon" />
+        {% comment %} Load Bootstrap icons {% endcomment %}
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://unpkg.com/tippy.js@6"></script>
+    </head>
+    <body>
+        {% comment %} Navbar {% endcomment %}
+        <nav class="navbar navbar-expand-lg bg-secondary-subtle position-relative">
+            <div class="container-fluid d-flex align-items-center justify-content-between">
+                <button class="navbar-toggler d-lg-none"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#mobileSidebarMenu"
+                        aria-controls="mobileSidebarMenu"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand mx-auto d-lg-none position-absolute start-50 translate-middle-x"
+                   href="{% url "dashboard" %}">
+                    <img src="{% static "logo-nav.png" %}"
+                         alt="Logo Pupil Questions"
+                         width="128"
+                         height="auto" />
+                </a>
+                <a class="navbar-brand d-none d-lg-block" href="{% url "dashboard" %}">
+                    <img src="{% static "logo-nav.png" %}"
+                         alt="Logo Pupil Questions"
+                         width="128"
+                         height="auto" />
+                </a>
+                <div class="d-flex align-items-center gap-2">
+                    <span id="theme-toggle" role="button" class="fs-4">
+                        <i class="bi" id="theme-icon"></i>
+                    </span>
+                    <div class="dropdown ms-auto">
+                        <a href="#"
+                           class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                           id="userDropdown"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <img src="https://ui-avatars.com/api/?name={{ user.full_name|urlencode }}&background=random&color=fff"
+                                 alt="avatar"
+                                 width="32"
+                                 height="32"
+                                 class="rounded-circle" />
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end text-small"
+                            aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" href="#">Gerenciar conta</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{% url "logout" %}">Sair</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% comment %} Mobile sidebar {% endcomment %}
+        <div class="offcanvas offcanvas-start"
+             tabindex="-1"
+             id="mobileSidebarMenu"
+             aria-labelledby="mobileSidebarMenu"
+             style="width: 250px">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menu</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">{% menu %}</div>
+        </div>
+        <style>
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 200px;
+            flex-shrink: 0;
+        }
+        </style>
+        {% comment %} Wrap content {% endcomment %}
+        <div class="d-flex min-vh-100">
+            <div class="bg-secondary-subtle d-none d-lg-block sidebar flex-shrink-0">{% menu %}</div>
+            <main class="flex-grow-1 p-3 overflow-auto">
+                {% include "components/alert.html" %}
+                {% block content %}
+                {% endblock content %}
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    {% comment %} Script to set theme {% endcomment %}
+    <script>
+    const html = document.documentElement;
+    const icon = document.getElementById("theme-icon");
+    const toggle = document.getElementById("theme-toggle");
+
+    const icons = {
+      light: "bi-moon-fill",
+      dark: "bi-sun-fill",
+    };
+
+    function applyTheme(theme) {
+      html.setAttribute("data-bs-theme", theme);
+      icon.className = `bi ${icons[theme]}`;
+      localStorage.setItem("theme", theme);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      applyTheme(savedTheme);
+    });
+
+    toggle.addEventListener("click", () => {
+      const currentTheme = html.getAttribute("data-bs-theme");
+      const newTheme = currentTheme === "light" ? "dark" : "light";
+      applyTheme(newTheme);
+    });
+    </script>
+</html>

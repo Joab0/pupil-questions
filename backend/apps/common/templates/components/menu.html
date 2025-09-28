@@ -1,0 +1,13 @@
+{% load menu %}
+<style>
+.nav-link {
+  text-decoration: none !important;
+  color: var(--bs-heading-color);
+}
+.nav-link.active {
+  background-color: var(--bs-secondary);
+}
+</style>
+<nav class="nav flex-column">
+  {% nav_link "grid-1x2" "Dashboard" "dashboard" %}
+</nav>

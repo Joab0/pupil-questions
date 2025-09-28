@@ -1,0 +1,7 @@
+{% load icons %}
+<a class="nav-link{{ active }}" href="{{ url }}">
+    <div class="d-flex gap-2">
+        {% icon icon_name %}
+        <span>{{ label }}</span>
+    </div>
+</a>
