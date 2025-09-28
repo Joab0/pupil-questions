@@ -10,5 +10,15 @@
     "**/.venv": true,
     "**/.pytest_cache": true,
     "**/.ruff_cache": true
-  }
+  },
+  "[html][django-html][handlebars][hbs][mustache][jinja][jinja-html][nj][njk][nunjucks][twig]": {
+    "editor.defaultFormatter": "monosans.djlint",
+  },
+  "files.associations": {
+    "django-html": "html"
+  },
+  "emmet.includeLanguages": {
+    "django-html": "html"
+  },
+  "djlint.configuration": "pyproject.toml"
 }
