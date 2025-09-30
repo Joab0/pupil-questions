@@ -72,13 +72,16 @@
             {% endfor %}
         </div>
     {% endif %}
-    <div class="mt-3">
-        <hr>
-        <form action="{% url "question_set_delete" question_set_id=question_set.pk %}"
-              method="post"
-              onsubmit="return confirm('Tem certeza que deseja excluir as questões?');">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">{% icon "trash" "me-1" %}Excluir Questões</button>
-        </form>
-    </div>
+    {% comment %} Don't allow to delete if status is pending {% endcomment %}
+    {% if question_set.status != "pending" %}
+        <div class="mt-3">
+            <hr>
+            <form action="{% url "question_set_delete" question_set_id=question_set.pk %}"
+                  method="post"
+                  onsubmit="return confirm('Tem certeza que deseja excluir as questões?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">{% icon "trash" "me-1" %}Excluir Questões</button>
+            </form>
+        </div>
+    {% endif %}
 {% endblock content %}
