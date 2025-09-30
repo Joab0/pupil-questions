@@ -26,7 +26,7 @@
         <div class="d-flex flex-row gap-2 mb-3">
             <a href="{% url "question_set_start_practice" question_set_id=question_set.pk %}"
                class="button btn btn-success">{% icon "journal-check" "me-2" %}Praticar</a>
-            <button class="button btn btn-secondary">{% icon "filetype-pdf" "me-2" %}Exportar paracomo PDF</button>
+            <button class="button btn btn-secondary">{% icon "filetype-pdf" "me-2" %}Exportar para PDF</button>
         </div>
         <div class="row g-3">
             {% for question in question_set.questions.all %}
