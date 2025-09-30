@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Choice, Question, QuestionSet
+from .models import Choice, PracticeAnswer, PracticeSession, Question, QuestionSet
 
 
 @admin.register(QuestionSet)
@@ -18,3 +18,13 @@ class QuestionAdmin(admin.ModelAdmin):
 @admin.register(Choice)
 class ChoiceAdmin(admin.ModelAdmin):
     list_display = ["question", "text", "is_correct"]
+
+
+@admin.register(PracticeSession)
+class PracticeSessionAdmin(admin.ModelAdmin):
+    list_display = ["user", "question_set", "current_index", "created_at"]
+
+
+@admin.register(PracticeAnswer)
+class PracticeAnswerAdmin(admin.ModelAdmin):
+    list_display = ["session", "question", "choice"]

@@ -1,0 +1,48 @@
+{% extends "components/layout.html" %}
+{% load icons index_letter %}
+{% block content %}
+    <h2 class="mb-3">Praticar {{ session.question_set.title }}</h2>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            {% comment %} Question number {% endcomment %}
+            <div class="progress mb-3"
+                 role="progressbar"
+                 aria-valuenow="{{ progress }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+                <div class="progress-bar" style="width: {{ progress }}%"></div>
+            </div>
+            <h5 class="card-title">Questão {{ session.current_index|add:1 }} de {{ session.questions_order|length }}</h5>
+            <p class="card-text">{{ question.text }}</p>
+            {% comment %} Form {% endcomment %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="list-group mb-3">
+                    {% for choice in question.choices.all %}
+                        <label class="list-group-item">
+                            <input class="form-check-input me-1"
+                                   type="radio"
+                                   name="choice"
+                                   value="{{ choice.pk }}"
+                                   {% if choice.pk == selected_choice_id %}checked{% endif %}>
+                            {{ forloop.counter0|index_letter }}. {{ choice.text }}
+                        </label>
+                    {% endfor %}
+                </div>
+                <div class="d-flex justify-content-between">
+                    {% comment %} Previous {% endcomment %}
+                    <button type="submit"
+                            name="previous"
+                            class="btn btn-outline-secondary"
+                            {% if session.current_index == 0 %}disabled{% endif %}>Anterior</button>
+                    {% comment %} Next or finish {% endcomment %}
+                    {% if session.current_index < session.questions_order|length|add:"-1" %}
+                        <button type="submit" name="next" class="btn btn-primary">Próximo</button>
+                    {% else %}
+                        <button type="submit" name="finish" class="btn btn-success">Finalizar</button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

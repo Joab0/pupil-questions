@@ -24,7 +24,8 @@
         {% comment %} TODO: Show error message and add retry button {% endcomment %}
     {% else %}
         <div class="d-flex flex-row gap-2 mb-3">
-            <button class="button btn btn-success">{% icon "journal-check" "me-2" %}Praticar</button>
+            <a href="{% url "question_set_start_practice" question_set_id=question_set.pk %}"
+               class="button btn btn-success">{% icon "journal-check" "me-2" %}Praticar</a>
             <button class="button btn btn-secondary">{% icon "filetype-pdf" "me-2" %}Exportar paracomo PDF</button>
         </div>
         <div class="row g-3">
@@ -38,26 +39,26 @@
                                     <label class="list-group-item">
                                         <input class="form-check-input me-1"
                                                type="radio"
-                                               name="choice-{{ question.id }}"
+                                               name="choice-{{ question.pk }}"
                                                value="{{ forloop.counter }}" />
                                         {{ forloop.counter0|index_letter|upper }}. {{ choice.text }}
                                     </label>
                                 {% endfor %}
                             </div>
                             {% comment %} Question explanation {% endcomment %}
-                            <div class="accordion mt-2" id="e{{ question.id }}">
+                            <div class="accordion mt-2" id="e{{ question.pk }}">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed"
                                                 type="button"
                                                 data-bs-toggle="collapse"
-                                                data-bs-target="#collapse-{{ question.id }}"
+                                                data-bs-target="#collapse-{{ question.pk }}"
                                                 aria-expanded="false"
-                                                aria-controls="collapse-{{ question.id }}">Mostrar Resposta</button>
+                                                aria-controls="collapse-{{ question.pk }}">Mostrar Resposta</button>
                                     </h2>
-                                    <div id="collapse-{{ question.id }}"
+                                    <div id="collapse-{{ question.pk }}"
                                          class="accordion-collapse collapse"
-                                         data-bs-parent="#e{{ question.id }}">
+                                         data-bs-parent="#e{{ question.pk }}">
                                         <div class="accordion-body">
                                             {% for choice in question.choices.all %}
                                                 {% if choice.is_correct %}

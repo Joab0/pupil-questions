@@ -69,3 +69,34 @@ class Choice(models.Model):
 
     def __str__(self) -> str:
         return self.text
+
+
+class PracticeSession(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
+    question_set = models.ForeignKey(
+        QuestionSet, on_delete=models.CASCADE, verbose_name="Conjunto de Questões"
+    )
+    questions_order = models.JSONField(verbose_name="Ordem das questões")  # ID list
+    current_index = models.SmallIntegerField(verbose_name="Índice atual", default=0)
+    created_at = models.DateTimeField(verbose_name="Criado em", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Sessão de prática"
+        verbose_name_plural = "Sessões de práticas"
+
+    def __str__(self) -> str:
+        return self.question_set.title
+
+
+class PracticeAnswer(models.Model):
+    session = models.ForeignKey(
+        PracticeSession, on_delete=models.CASCADE, related_name="answers", verbose_name="Sessão"
+    )
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name="Questão")
+    choice = models.ForeignKey(
+        Choice, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Alternativa"
+    )
+
+    class Meta:
+        verbose_name = "Resposta da prática"
+        verbose_name_plural = "Respostas das práticas"
