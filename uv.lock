@@ -268,6 +268,15 @@ wheels = [
 ]
 
 [[package]]
+name = "django-turnstile"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/dd/fd/7f916c3e603ad5d8f5e544eacd82df989d19662b551cb3c9fbfaedbe5464/django_turnstile-0.1.2.tar.gz", hash = "sha256:7eb4ec8452ff6799792233eddc037578ca465134d1409b385c05bdec911a5154", size = 5257, upload-time = "2024-10-17T12:21:01.107Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/7d/6dd43ddf5e4c26985656f6d945294a3c9166944577d25f9bce6634acc432/django_turnstile-0.1.2-py3-none-any.whl", hash = "sha256:e671222e89ef24117768fbc7311da21f9bc60be6bc975e942cd3eff95a4e2b2c", size = 6579, upload-time = "2024-10-17T12:20:59.223Z" },
+]
+
+[[package]]
 name = "djlint"
 version = "1.36.4"
 source = { registry = "https://pypi.org/simple" }
@@ -520,6 +529,7 @@ dependencies = [
     { name = "django-environ" },
     { name = "django-filter" },
     { name = "django-ipware" },
+    { name = "django-turnstile" },
     { name = "gunicorn" },
     { name = "markdown" },
     { name = "openai" },
@@ -541,6 +551,7 @@ requires-dist = [
     { name = "django-environ", specifier = ">=0.12.0" },
     { name = "django-filter", specifier = ">=25.1" },
     { name = "django-ipware", specifier = ">=7.0.1" },
+    { name = "django-turnstile", specifier = ">=0.1.2" },
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "markdown", specifier = ">=3.9" },
     { name = "openai", specifier = ">=1.109.1" },

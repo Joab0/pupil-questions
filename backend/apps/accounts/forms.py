@@ -1,10 +1,13 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from turnstile.fields import TurnstileField
 
 from .models import User
 
 
 class RegisterForm(UserCreationForm):
+    turnstile = TurnstileField(theme="dark")
+
     email = forms.EmailField(required=True)
 
     class Meta:
@@ -19,6 +22,8 @@ class RegisterForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
+    turnstile = TurnstileField(theme="dark")
+
     username = forms.EmailField()
     password = forms.CharField()
 
