@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "apps.common",
     "apps.accounts",
     "apps.dashboard",
+    "apps.questions",
 ]
 
 
@@ -152,3 +153,6 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
+AI_SERVICE_API_KEY = env("AI_SERVICE_API_KEY")
+AI_SERVICE_BASE_URL = env("AI_SERVICE_BASE_URL")
+AI_SERVICE_MODEL = env("AI_SERVICE_MODEL")

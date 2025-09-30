@@ -11,6 +11,8 @@ dependencies = [
     "django-filter>=25.1",
     "django-ipware>=7.0.1",
     "markdown>=3.9",
+    "openai>=1.109.1",
+    "pydantic>=2.11.9",
 ]
 
 
