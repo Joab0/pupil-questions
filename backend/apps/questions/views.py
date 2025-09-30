@@ -85,6 +85,14 @@ def question_set_view(request: HttpRequest, question_set_id: int):
 
 
 @login_required
+def question_set_delete_view(request: HttpRequest, question_set_id: int):
+    if request.method == "POST":
+        question_set = get_object_or_404(QuestionSet, user=request.user, pk=question_set_id)
+        question_set.delete()
+    return redirect("question_sets")
+
+
+@login_required
 def question_set_status_view(request: HttpRequest, question_set_id: int):
     question_set = get_object_or_404(QuestionSet, user=request.user, pk=question_set_id)
     return JsonResponse({"status": question_set.status})
