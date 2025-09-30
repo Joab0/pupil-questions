@@ -5,7 +5,7 @@
     {% if not question_sets %}
         <div class="mt-5 text-center">
             <p>Você ainda não criou nenhum conjunto de questões.</p>
-            <a class="btn btn-primary" href="{% url "question_sets" %}">Criar Questões</a>
+            <a class="btn btn-primary" href="{% url "add_question_set" %}">Criar Questões</a>
         </div>
     {% else %}
         <div class="row row-cols-1 row-cols-lg-3 row-cols-md-2 g-4">
