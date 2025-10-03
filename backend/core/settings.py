@@ -118,6 +118,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # We need to use custom user
 AUTH_USER_MODEL = "accounts.User"
 
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 8,
+        },
+    },
+]
+
 AUTHENTICATION_BACKENDS = [
     "core.auth.AuthBackend",
 ]
@@ -150,6 +162,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 TURNSTILE_SITEKEY = env("TURNSTILE_SITEKEY")
 TURNSTILE_SECRET = env("TURNSTILE_SECRET")
+TURNSTILE_DEFAULT_CONFIG = {
+    "theme": "auto",
+    "size": "flexible",
+    "render": "implicit",
+}
 
 CELERY_BROKER_URL = env("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")

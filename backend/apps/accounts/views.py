@@ -26,7 +26,11 @@ def register_view(request):
     else:
         form = RegisterForm()
 
-    return render(request, "accounts/register.html", {"form": form})
+    return render(
+        request,
+        "accounts/register.html",
+        context={"form": form},
+    )
 
 
 def login_view(request):

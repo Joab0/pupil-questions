@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="backend/static/logo-nav.png" alt="Logo" width="200"/>
+  <img src="backend/static/img/logo-nav.png" alt="Logo" width="200"/>
 </p>
 
 Pupil Questions é uma ferramenta para gerar questões usando IA.

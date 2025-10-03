@@ -11,7 +11,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="language" content="Portuguese">
         <title>Criar conta</title>
-        <link rel="stylesheet" href="{% static "style.css" %}" />
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+        <link rel="stylesheet" href="{% static "css/style.css" %}" />
         <link rel="shortcut icon"
               href="{% static "favicon.ico" %}"
               type="image/x-icon" />
@@ -65,37 +66,29 @@
                     </div>
                     {% comment %} Passowrd {% endcomment %}
                     <div class="mb-3">
-                        <label for="password" class="form-label">Senha</label>
-                        <input type="password"
-                               class="form-control"
-                               id="password"
-                               name="password1"
-                               placeholder="Digite sua senha"
-                               minlength="8"
-                               required
-                               autocomplete="current-password"
-                               aria-describedby="passwordHelper" />
-                        <div id="passwordHeler" class="form-text">
-                            Sua senha deve ter:
-                            <ul class="mb-0">
-                                <li>Ao menos 8 caracteres</li>
-                                <li>Uma letra maiúscula</li>
-                                <li>Uma letra minúscula</li>
-                                <li>Um número</li>
-                                <li>Um caractere especial (ex: !@#$%)</li>
-                            </ul>
+                        <label for="password1" class="form-label">Senha</label>
+                        <div class="input-group">
+                            <input type="password"
+                                   id="password1"
+                                   class="form-control"
+                                   name="password1"
+                                   placeholder="Digite sua senha"
+                                   autocomplete="current-password"
+                                   required />
                         </div>
                     </div>
                     {% comment %} Confirm password {% endcomment %}
                     <div class="mb-3">
                         <label for="password" class="form-label">Confirmar senha</label>
-                        <input type="password"
-                               class="form-control"
-                               id="confirm-password"
-                               name="password2"
-                               placeholder="Confirme sua senha"
-                               minlength="8"
-                               required />
+                        <div class="input-group">
+                            <input type="password"
+                                   class="form-control"
+                                   id="confirm-password"
+                                   name="password2"
+                                   placeholder="Confirme sua senha"
+                                   minlength="8"
+                                   required />
+                        </div>
                     </div>
                     <div class="mb-3">{{ form.turnstile }}</div>
                     <button type="submit" class="btn btn-primary w-100">Criar Conta</button>
@@ -109,5 +102,6 @@
             </div>
         </main>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static "js/password-toggle.js" %}"></script>
     </body>
 </html>
