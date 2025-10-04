@@ -37,33 +37,26 @@ button.toggle-password:focus {
 }
 
 /* Custom styles */
-.ai-btn {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
+.btn-ai {
   background: linear-gradient(135deg, #0096ff, #00c6ff);
-  border: none;
   border-radius: 0.75rem;
-  cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 150, 255, 0.4);
 }
 
-.ai-btn:hover {
+.btn-ai:hover {
   background: linear-gradient(135deg, #00a6ff, #00d4ff);
   box-shadow: 0 6px 18px rgba(0, 150, 255, 0.55);
   transform: translateY(-2px);
 }
 
-.ai-btn:active {
+.btn-ai:active {
   background: linear-gradient(135deg, #0086e6, #00b6e6);
   transform: translateY(0);
   box-shadow: 0 3px 8px rgba(0, 150, 255, 0.35);
 }
 
-.ai-btn:focus {
+.btn-ai:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 150, 255, 0.5);
 }
