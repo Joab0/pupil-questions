@@ -6,20 +6,6 @@
         <div class="col-md-12 col-lg-6">
             <form action="{% url "add_question_set" %}" method="post">
                 {% csrf_token %}
-                {% comment %} Question set title {% endcomment %}
-                <div class="mb-3">
-                    <label for="question-set-title" class="form-label">Título</label>
-                    <input type="text"
-                           name="title"
-                           id="question-set-title"
-                           class="form-control"
-                           maxlength="255"
-                           minlength="2"
-                           placeholder="O título do conjunto de questões (ex: Questões sobre álgebra e geometria)"
-                           autocomplete="on"
-                           value="{{ form.title.value|default:"" }}"
-                           required />
-                </div>
                 {% comment %} Question set {% endcomment %}
                 <div class="mb-3">
                     <label for="question-set-prompt" class="form-label">Prompt</label>
@@ -45,8 +31,7 @@
                            value="{{ form.questions_number.value }}"
                            placeholder="Número de questões" />
                 </div>
-                <div class="mb-3">{{ form.turnstile }}</div>
-                <button type="submit" class="btn btn-primary w-100">{% icon "stars" %} Criar Questões</button>
+                <button type="submit" class="btn btn-ai btn-lg w-100">{% icon "stars" %} Gerar Questões</button>
             </form>
         </div>
     </div>

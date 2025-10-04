@@ -18,7 +18,7 @@
                                 <h5>{{ question_set.title }}</h5>
                                 <span class="d-flex flex-column">
                                     <span>{% icon "list" "me-1" %}{{ question_set.questions.all|length }} Questões</span>
-                                    <span>{% icon "stars" "me-1" %}{{ question_set.prompt }}</span>
+                                    <span>{% icon "info-circle" "me-1" %}{{ question_set.description }}</span>
                                 </span>
                             </span>
                             <a href="{% url "question_set" question_set.pk %}"

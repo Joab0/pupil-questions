@@ -5,7 +5,7 @@ from .models import Choice, PracticeAnswer, PracticeSession, Question, QuestionS
 
 @admin.register(QuestionSet)
 class QuestionSetAdmin(admin.ModelAdmin):
-    list_display = ["user", "title", "model_name", "created_at", "status"]
+    list_display = ["user", "title", "model", "created_at", "status"]
     readonly_fields = ["created_at"]
 
 

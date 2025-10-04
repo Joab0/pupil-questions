@@ -24,6 +24,7 @@ class Question(BaseModel):
 
 class GenerateQuestionSetResponse(BaseModel):
     title: str
+    description: str
     questions: list[Question]
 
 
@@ -39,10 +40,9 @@ def generate_questions(prompt: str, count: int) -> GenerateQuestionSetResponse:
     - Indication of the correct answer option
     - Explanation
     Respond in JSON format, like this:
-    The output must be a single compact JSON string without any extra formatting,
-    line breaks or code blocks, just send the plain json, like this:
     {{
-        "title": "Short name for this question set.",
+        "title": "Short title",
+        "description": "Short description",
         "questions": [
             {{
                 "text": "...",
@@ -61,6 +61,7 @@ def generate_questions(prompt: str, count: int) -> GenerateQuestionSetResponse:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt},
         ],
+        response_format={"type": "json_object"},
         temperature=1.3,
         stream=False,
     )

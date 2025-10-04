@@ -7,9 +7,10 @@ class QuestionSet(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="question_sets", verbose_name="Usuário"
     )
-    title = models.CharField(verbose_name="Título", max_length=255)
+    title = models.CharField(verbose_name="Título", max_length=128)
+    description = models.CharField(verbose_name="Descrição", max_length=512, null=True)
     prompt = models.TextField(verbose_name="Prompt")
-    model_name = models.CharField(verbose_name="Nome do modelo", max_length=100, null=True)
+    model = models.CharField(verbose_name="Nome do modelo", max_length=100, null=True)
     created_at = models.DateTimeField(verbose_name="Data de criação", auto_now_add=True)
     status = models.CharField(
         verbose_name="Status",

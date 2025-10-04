@@ -19,8 +19,9 @@ def generate_questions_task(question_set_id: int, prompt: str, questions_number:
     try:
         response = generate_questions(prompt, questions_number)
         question_set.title = response.title
-        question_set.model_name = settings.AI_SERVICE_MODEL
-        question_set.save(update_fields=["title", "model_name"])
+        question_set.description = response.description
+        question_set.model = settings.AI_SERVICE_MODEL
+        question_set.save(update_fields=["title", "description", "model"])
 
         with transaction.atomic():
             for question in response.questions:

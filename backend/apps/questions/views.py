@@ -38,7 +38,8 @@ def add_question_set_view(request: HttpRequest):
                 data = form.cleaned_data
                 question_set = QuestionSet.objects.create(
                     user=request.user,
-                    title=data["title"],
+                    # Temporary title
+                    title=data["prompt"][:20],
                     prompt=data["prompt"],
                     status="pending",
                 )
