@@ -1,5 +1,5 @@
 {% extends "components/base.html" %}
-{% load static menu %}
+{% load static menu icons %}
 {% block head %}
     {% comment %} Load scripts to auth user {% endcomment %}
     <script src="{% static "js/theme.js" %}" defer></script>
@@ -48,14 +48,15 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end text-small"
                             aria-labelledby="userDropdown">
+                            <li class="dropdown-item disabled">{{ user.email }}</li>
                             <li>
-                                <a class="dropdown-item" href="{% url "account" %}">Gerenciar conta</a>
+                                <a class="dropdown-item" href="{% url "account" %}">{% icon "person" "me-2" %}Gerenciar conta</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
                             <li>
-                                <a class="dropdown-item text-danger" href="{% url "logout" %}">Sair</a>
+                                <a class="dropdown-item text-danger" href="{% url "logout" %}">{% icon "box-arrow-left" "me-2" %}Sair</a>
                             </li>
                         </ul>
                     </div>
