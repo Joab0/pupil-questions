@@ -47,7 +47,6 @@ button.toggle-password:focus {
 /* Custom styles */
 .btn-ai {
   background: linear-gradient(135deg, #0096ff, #00c6ff);
-  border-radius: 0.75rem;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 150, 255, 0.4);
 }
