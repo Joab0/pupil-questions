@@ -77,35 +77,41 @@
                         {% comment %} Old password {% endcomment %}
                         <div class="mb-3">
                             <label class="form-label" for="password">Senha atual</label>
-                            <input type="password"
-                                   class="form-control"
-                                   id="password"
-                                   name="old_password"
-                                   placeholder="Digite sua senha atual"
-                                   autocomplete="current-password"
-                                   required />
+                            <div class="input-group">
+                                <input type="password"
+                                       class="form-control"
+                                       id="password"
+                                       name="old_password"
+                                       placeholder="Digite sua senha atual"
+                                       autocomplete="current-password"
+                                       required />
+                            </div>
                         </div>
                         {% comment %} New password {% endcomment %}
                         <div class="mb-3">
                             <label class="form-label" for="password">Nova senha</label>
-                            <input type="password"
-                                   class="form-control"
-                                   id="new-passowrd1"
-                                   name="new_password1"
-                                   minlength="8"
-                                   placeholder="Digite a nova senha"
-                                   required />
+                            <div class="input-group">
+                                <input type="password"
+                                       class="form-control"
+                                       id="new-passowrd1"
+                                       name="new_password1"
+                                       minlength="8"
+                                       placeholder="Digite a nova senha"
+                                       required />
+                            </div>
                         </div>
                         {% comment %} Confirm new password {% endcomment %}
                         <div class="mb-3">
                             <label class="form-label" for="password">Confirmar nova senha</label>
-                            <input type="password"
-                                   class="form-control"
-                                   id="new-password2"
-                                   name="new_password2"
-                                   minlength="8"
-                                   placeholder="Confirme a nova senha"
-                                   required />
+                            <div class="input-group">
+                                <input type="password"
+                                       class="form-control"
+                                       id="new-password2"
+                                       name="new_password2"
+                                       minlength="8"
+                                       placeholder="Confirme a nova senha"
+                                       required />
+                            </div>
                         </div>
                         <button class="btn btn-primary w-100" name="change_password">Alterar Senha</button>
                     </form>
