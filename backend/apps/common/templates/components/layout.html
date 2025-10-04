@@ -95,15 +95,6 @@
             </div>
             <div class="offcanvas-body p-0">{% menu %}</div>
         </div>
-        <style>
-        .sidebar {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            width: 200px;
-            flex-shrink: 0;
-        }
-        </style>
         {% comment %} Wrap content {% endcomment %}
         <div class="d-flex min-vh-100">
             <div class="bg-secondary-subtle d-none d-lg-block sidebar flex-shrink-0">{% menu %}</div>
@@ -114,33 +105,6 @@
             </main>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static "js/theme.js" %}"></script>
     </body>
-    {% comment %} Script to set theme {% endcomment %}
-    <script>
-    const html = document.documentElement;
-    const icon = document.getElementById("theme-icon");
-    const toggle = document.getElementById("theme-toggle");
-
-    const icons = {
-      light: "bi-moon-fill",
-      dark: "bi-sun-fill",
-    };
-
-    function applyTheme(theme) {
-      html.setAttribute("data-bs-theme", theme);
-      icon.className = `bi ${icons[theme]}`;
-      localStorage.setItem("theme", theme);
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const savedTheme = localStorage.getItem("theme") || "light";
-      applyTheme(savedTheme);
-    });
-
-    toggle.addEventListener("click", () => {
-      const currentTheme = html.getAttribute("data-bs-theme");
-      const newTheme = currentTheme === "light" ? "dark" : "light";
-      applyTheme(newTheme);
-    });
-    </script>
 </html>
