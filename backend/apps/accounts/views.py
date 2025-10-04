@@ -29,7 +29,7 @@ def register_view(request):
     return render(
         request,
         "accounts/register.html",
-        context={"form": form},
+        context={"title": "Criar conta", "form": form},
     )
 
 
@@ -47,7 +47,7 @@ def login_view(request):
     else:
         form = LoginForm()
 
-    return render(request, "accounts/login.html", {"form": form})
+    return render(request, "accounts/login.html", context={"title": "Fazer login", "form": form})
 
 
 def logout_view(request):
