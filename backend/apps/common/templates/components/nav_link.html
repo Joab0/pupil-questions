@@ -2,6 +2,7 @@
 <a class="nav-link{{ active }}" href="{{ url }}">
     <div class="d-flex gap-2">
         {% icon icon_name %}
-        <span>{{ label }}</span>
+        {% comment %} Truncate text here to avoid sidebar readjustment while opening {% endcomment %}
+        <span class="text-truncate">{{ label }}</span>
     </div>
 </a>
