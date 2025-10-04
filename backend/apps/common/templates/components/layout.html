@@ -3,66 +3,10 @@
 {% block head %}
     {% comment %} Load scripts to auth user {% endcomment %}
     <script src="{% static "js/theme.js" %}" defer></script>
+    <script src="{% static "js/sidebar.js" %}" defer></script>
 {% endblock head %}
 {% block base %}
     <body>
-        {% comment %} Navbar {% endcomment %}
-        <nav class="navbar navbar-expand-lg bg-secondary-subtle position-relative">
-            <div class="container-fluid d-flex align-items-center justify-content-between">
-                <button class="navbar-toggler d-lg-none"
-                        type="button"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#mobileSidebarMenu"
-                        aria-controls="mobileSidebarMenu"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand mx-auto d-lg-none position-absolute start-50 translate-middle-x"
-                   href="{% url "dashboard" %}">
-                    <img src="{% static "img/logo-nav.png" %}"
-                         alt="Logo Pupil Questions"
-                         width="128"
-                         height="auto" />
-                </a>
-                <a class="navbar-brand d-none d-lg-block" href="{% url "dashboard" %}">
-                    <img src="{% static "img/logo-nav.png" %}"
-                         alt="Logo Pupil Questions"
-                         width="128"
-                         height="auto" />
-                </a>
-                <div class="d-flex align-items-center gap-2">
-                    <span id="theme-toggle" role="button" class="fs-4">
-                        <i class="bi" id="theme-icon"></i>
-                    </span>
-                    <div class="dropdown ms-auto">
-                        <a href="#"
-                           class="d-flex align-items-center text-decoration-none dropdown-toggle"
-                           id="userDropdown"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            <img src="https://ui-avatars.com/api/?name={{ user.full_name|urlencode }}&background=random&color=fff"
-                                 alt="avatar"
-                                 width="32"
-                                 height="32"
-                                 class="rounded-circle" />
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end text-small"
-                            aria-labelledby="userDropdown">
-                            <li class="dropdown-item disabled">{{ user.email }}</li>
-                            <li>
-                                <a class="dropdown-item" href="{% url "account" %}">{% icon "person" "me-2" %}Gerenciar conta</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="{% url "logout" %}">{% icon "box-arrow-left" "me-2" %}Sair</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </nav>
         {% comment %} Mobile sidebar {% endcomment %}
         <div class="offcanvas offcanvas-start"
              tabindex="-1"
@@ -80,12 +24,77 @@
         </div>
         {% comment %} Wrap content {% endcomment %}
         <div class="d-flex min-vh-100">
-            <div class="bg-secondary-subtle d-none d-lg-block sidebar flex-shrink-0">{% menu %}</div>
-            <main class="flex-grow-1 p-3 overflow-auto">
-                {% include "components/alert.html" %}
-                {% block content %}
-                {% endblock content %}
-            </main>
+            <div id="sidebar"
+                 class="bg-secondary-subtle d-none d-lg-block sidebar flex-shrink-0">
+                <div class="text-center">
+                    <a class="d-none d-lg-block" href="{% url "dashboard" %}">
+                        <img src="{% static "img/logo-full.png" %}"
+                             alt="Logo Pupil Questions"
+                             width="128"
+                             height="auto" />
+                    </a>
+                </div>
+                {% menu %}
+            </div>
+            <div class="w-100">
+                {% comment %} Navbar {% endcomment %}
+                <nav class="navbar navbar-expand-lg">
+                    <div class="container-fluid d-flex align-items-center justify-content-between">
+                        <button class="navbar-toggler d-lg-none"
+                                type="button"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#mobileSidebarMenu"
+                                aria-controls="mobileSidebarMenu"
+                                aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <a class="navbar-brand mx-auto d-lg-none position-absolute start-50 translate-middle-x"
+                           href="{% url "dashboard" %}">
+                            <img src="{% static "img/logo-nav.png" %}"
+                                 alt="Logo Pupil Questions"
+                                 width="128"
+                                 height="auto" />
+                        </a>
+                        <button id="sidebar-toggle" class="btn btn-lg d-none d-lg-block">{% icon "text-indent-right" %}</button>
+                        <div class="d-flex align-items-center gap-2">
+                            <span id="theme-toggle" role="button" class="fs-4">
+                                <i class="bi" id="theme-icon"></i>
+                            </span>
+                            <div class="dropdown ms-auto">
+                                <a href="#"
+                                   class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                                   id="userDropdown"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <img src="https://ui-avatars.com/api/?name={{ user.full_name|urlencode }}&background=random&color=fff"
+                                         alt="avatar"
+                                         width="32"
+                                         height="32"
+                                         class="rounded-circle" />
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end text-small"
+                                    aria-labelledby="userDropdown">
+                                    <li class="dropdown-item disabled">{{ user.email }}</li>
+                                    <li>
+                                        <a class="dropdown-item" href="{% url "account" %}">{% icon "person" "me-2" %}Gerenciar conta</a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="{% url "logout" %}">{% icon "box-arrow-left" "me-2" %}Sair</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <main class="flex-grow-1 px-4 overflow-auto">
+                    {% include "components/alert.html" %}
+                    {% block content %}
+                    {% endblock content %}
+                </main>
+            </div>
         </div>
     </body>
 {% endblock base %}
