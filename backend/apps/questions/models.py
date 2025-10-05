@@ -1,6 +1,13 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from django.db import models
 
 from apps.accounts.models import User
+
+if TYPE_CHECKING:
+    from django.db.models.fields.related_descriptors import RelatedManager
 
 
 class QuestionSet(models.Model):
@@ -21,6 +28,9 @@ class QuestionSet(models.Model):
             ("error", "Erro"),
         ],
     )
+
+    if TYPE_CHECKING:
+        questions: RelatedManager["Question"]
 
     class Meta:
         verbose_name = "Conjunto de questões"
@@ -48,6 +58,9 @@ class Question(models.Model):
     )
     explanation = models.TextField(verbose_name="Explicação")
     created_at = models.DateTimeField(verbose_name="Data de criação", auto_now_add=True)
+
+    if TYPE_CHECKING:
+        choices: RelatedManager["Choice"]
 
     class Meta:
         verbose_name = "Questão"
@@ -80,6 +93,10 @@ class PracticeSession(models.Model):
     questions_order = models.JSONField(verbose_name="Ordem das questões")  # ID list
     current_index = models.SmallIntegerField(verbose_name="Índice atual", default=0)
     created_at = models.DateTimeField(verbose_name="Criado em", auto_now_add=True)
+    finished_at = models.DateTimeField(verbose_name="Finalizado em", null=True)
+
+    if TYPE_CHECKING:
+        answers: RelatedManager["PracticeAnswer"]
 
     class Meta:
         verbose_name = "Sessão de prática"
