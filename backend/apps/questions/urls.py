@@ -13,13 +13,13 @@ urlpatterns = [
         "<int:question_set_id>/status", views.question_set_status_view, name="question_set_status"
     ),
     path(
-        "<int:question_set_id>/start_practice",
-        views.question_set_start_practice_view,
-        name="question_set_start_practice",
-    ),
-    path(
-        "<int:session_id>/practice",
+        "<int:question_set_id>/practice",
         views.question_set_practice_view,
         name="question_set_practice",
+    ),
+    path(
+        "<int:question_set_id>/practice/<int:session_id>",
+        views.question_set_practice_results_view,
+        name="question_set_practice_results",
     ),
 ]

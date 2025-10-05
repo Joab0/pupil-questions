@@ -1,0 +1,53 @@
+{% extends "components/layout.html" %}
+{% load icons index_letter %}
+{% block content %}
+    <h2 class="mb-3">Resultados da prática</h2>
+    <div class="mb-3 d-flex flex-column">
+        <span>
+            {% icon "journals" "me-2" %}<strong>Questões:</strong> <a href="{% url "question_set" question_set_id=question_set.pk %}">{{ question_set.title }}</a>
+        </span>
+        <span>
+            {% icon "stopwatch" "me-2" %}<strong>Duração:</strong> {{ session.created_at|timesince:session.finished_at }}
+        </span>
+        <span>
+            {% icon "info-circle" "me-2" %}Você acertou <strong>{{ stats.correct }}</strong> de <strong>{{ stats.total }}</strong> ({{ stats.percent }}%) questões!
+        </span>
+    </div>
+    {% comment %} Show questions {% endcomment %}
+    <div class="row g-3">
+        {% for result in results %}
+            {% with question=result.question %}
+                <div class="col-12 col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ forloop.counter }}. {{ question.text }}</h5>
+                            <div class="list-group mb-3">
+                                {% for choice in question.choices.all %}
+                                    <div class="list-group-item{% if choice.is_correct %} list-group-item-success{% endif %}">
+                                        <input class="form-check-input me-1"
+                                               type="radio"
+                                               name="choice-{{ question.pk }}"
+                                               value="{{ forloop.counter }}"
+                                               {% if result.selected_choice == choice %}checked{% endif %}
+                                               disabled />
+                                        {{ forloop.counter0|index_letter|upper }}. {{ choice.text }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% comment %} Question explanation {% endcomment %}
+                            <div class="alert alert-info" role="alert">
+                                {% for choice in question.choices.all %}
+                                    {% if choice.is_correct %}
+                                        <strong>Letra {{ forloop.counter0|index_letter|upper }}</strong>
+                                        <br>
+                                    {% endif %}
+                                {% endfor %}
+                                {{ question.explanation }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
+    </div>
+{% endblock content %}
