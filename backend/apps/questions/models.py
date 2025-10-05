@@ -105,9 +105,7 @@ class PracticeAnswer(models.Model):
         PracticeSession, on_delete=models.CASCADE, related_name="answers", verbose_name="Sessão"
     )
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name="Questão")
-    choice = models.ForeignKey(
-        Choice, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Alternativa"
-    )
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE, verbose_name="Alternativa")
 
     class Meta:
         verbose_name = "Resposta da prática"
