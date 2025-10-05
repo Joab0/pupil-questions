@@ -88,6 +88,17 @@ class PracticeSession(models.Model):
     def __str__(self) -> str:
         return self.question_set.title
 
+    def get_unanswered_indexes(self):
+        answered_ids = set(self.answers.values_list("question_id", flat=True))  # pyright: ignore
+        unanswered_indexes = [
+            i for i, q_id in enumerate(self.questions_order) if q_id not in answered_ids
+        ]
+        return unanswered_indexes
+
+    def get_next_unanswered_index(self):
+        unanswered = self.get_unanswered_indexes()
+        return unanswered[0] if unanswered else None
+
 
 class PracticeAnswer(models.Model):
     session = models.ForeignKey(
