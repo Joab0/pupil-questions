@@ -83,9 +83,7 @@ def question_set_view(request: HttpRequest, question_set_id: int):
 
     # Get current practice session
     active_practice_session = PracticeSession.objects.filter(
-        user=request.user,
-        question_set=question_set,
-        finished_at=None,
+        question_set=question_set, finished_at=None
     ).first()
 
     return render(
@@ -114,11 +112,11 @@ def question_set_status_view(request: HttpRequest, question_set_id: int):
 
 
 @login_required
-def question_set_practice_view(request: HttpRequest, question_set_id: int):
+def question_set_start_practice_view(request: HttpRequest, question_set_id: int):
     question_set = get_object_or_404(QuestionSet, pk=question_set_id, user=request.user)
 
+    # Get current practice or create a new
     session, created = PracticeSession.objects.get_or_create(
-        user=request.user,
         question_set=question_set,
         finished_at=None,
         defaults={
@@ -135,6 +133,18 @@ def question_set_practice_view(request: HttpRequest, question_set_id: int):
         session.current_index = 0
         session.save()
 
+    return redirect("question_set_practice", question_set_id=question_set.pk, session_id=session.pk)
+
+
+@login_required
+def question_set_practice_view(request: HttpRequest, question_set_id: int, session_id: int):
+    session = get_object_or_404(
+        PracticeSession,
+        id=session_id,
+        question_set_id=question_set_id,
+        question_set__user=request.user,
+    )
+
     question_id = session.questions_order[session.current_index]
     question = Question.objects.prefetch_related("choices").get(pk=question_id)
 
@@ -142,7 +152,9 @@ def question_set_practice_view(request: HttpRequest, question_set_id: int):
         choice_id = request.POST.get("choice")
         if choice_id is not None:
             PracticeAnswer.objects.update_or_create(
-                session=session, question=question, defaults={"choice_id": choice_id}
+                session=session,
+                question=question,
+                defaults={"choice_id": choice_id},
             )
 
         if "next" in request.POST:
@@ -165,7 +177,9 @@ def question_set_practice_view(request: HttpRequest, question_set_id: int):
                 )
 
         session.save()
-        return redirect("question_set_practice", question_set_id=session.question_set.pk)
+        return redirect(
+            "question_set_practice", question_set_id=session.question_set.pk, session_id=session.pk
+        )
 
     answer = session.answers.filter(question=question).first()  # pyright: ignore[reportAttributeAccessIssue]
     selected_choice_id = answer.choice.pk if answer else None
@@ -204,8 +218,7 @@ def question_set_practice_results_view(request: HttpRequest, question_set_id: in
             ),
         ),
         pk=session_id,
-        question_set__pk=question_set_id,
-        user=request.user,
+        question_set_id=question_set_id,
     )
     answers = session.answers
     question_set = session.question_set
@@ -236,6 +249,7 @@ def question_set_practice_results_view(request: HttpRequest, question_set_id: in
         request,
         "questions/practice_results.html",
         context={
+            "title": "Resultados da prática",
             "session": session,
             "question_set": question_set,
             "duration": duration,

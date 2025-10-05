@@ -24,7 +24,7 @@
         {% comment %} TODO: Show error message and add retry button {% endcomment %}
     {% else %}
         <div class="d-flex flex-row gap-2 mb-3">
-            <a href="{% url "question_set_practice" question_set_id=question_set.pk %}"
+            <a href="{% url "question_set_start_practice" question_set_id=question_set.pk %}"
                class="button btn btn-success">{% icon "journal-check" "me-2" %}
                 {% if active_practice_session %}
                     Continuar Prática ({{ active_practice_session.current_index|add:1 }}/{{ active_practice_session.questions_order|length }})

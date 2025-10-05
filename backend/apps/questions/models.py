@@ -86,7 +86,6 @@ class Choice(models.Model):
 
 
 class PracticeSession(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
     question_set = models.ForeignKey(
         QuestionSet, on_delete=models.CASCADE, verbose_name="Conjunto de Questões"
     )
