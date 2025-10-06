@@ -1,10 +1,10 @@
 {% extends "components/layout.html" %}
-{% load icons %}
+{% load icons date_utils %}
 {% block content %}
     <h2 class="mb-3">Olá {{ user.first_name }}!</h2>
     <p>
         Bem-vindo(a) ao
-        <strong>Pupil Questions</strong>
+        <strong>Pupil Questions</strong>!
     </p>
     {% comment %} Stats {% endcomment %}
     <div class="row">
@@ -14,6 +14,24 @@
                 <div class="card-body">
                     <p>{% icon "journals" "me-2" %}Questões</p>
                     <h4>{{ questions_count }}</h4>
+                </div>
+            </div>
+        </div>
+        {% comment %} Number of practices {% endcomment %}
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-5 border-bottom-0 border-top-0 border-end-0 border-right border-primary bg-body-tertiary h-100">
+                <div class="card-body">
+                    <p>{% icon "journal-text" "me-2" %}Práticas</p>
+                    <h4>{{ practices_count }}</h4>
+                </div>
+            </div>
+        </div>
+        {% comment %} Practice time {% endcomment %}
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-5 border-bottom-0 border-top-0 border-end-0 border-right border-primary bg-body-tertiary h-100">
+                <div class="card-body">
+                    <p>{% icon "stopwatch" "me-2" %}Tempo de prática</p>
+                    <h4>{{ practice_time|naturaldelta }}</h4>
                 </div>
             </div>
         </div>
