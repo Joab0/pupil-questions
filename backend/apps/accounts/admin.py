@@ -18,6 +18,7 @@ def set_is_active_to_false(modeladmin, request, queryset):
 class CustomUserAdmin(UserAdmin):
     model = User
     list_display = (
+        "id",
         "email",
         "first_name",
         "last_name",

@@ -11,7 +11,7 @@
         </div>
         <script>
             const interval = setInterval(async () => {
-                const resp = await fetch("{% url "question_set_status" question_set_id=question_set.pk %}");
+                const resp = await fetch("{% url "question_set_status" question_set_id=question_set.id %}");
                 const data = await resp.json();
 
                 if (data.status !== "pending") {
@@ -24,7 +24,7 @@
         {% comment %} TODO: Show error message and add retry button {% endcomment %}
     {% else %}
         <div class="d-flex flex-row gap-2 mb-3">
-            <a href="{% url "question_set_start_practice" question_set_id=question_set.pk %}"
+            <a href="{% url "question_set_start_practice" question_set_id=question_set.id %}"
                class="button btn btn-success">{% icon "journal-check" "me-2" %}
                 {% if active_practice_session %}
                     Continuar Prática ({{ active_practice_session.current_index|add:1 }}/{{ active_practice_session.questions_order|length }})
@@ -45,26 +45,26 @@
                                     <label class="list-group-item">
                                         <input class="form-check-input me-1"
                                                type="radio"
-                                               name="choice-{{ question.pk }}"
+                                               name="choice-{{ question.id }}"
                                                value="{{ forloop.counter }}" />
                                         {{ forloop.counter0|index_letter|upper }}. {{ choice.text }}
                                     </label>
                                 {% endfor %}
                             </div>
                             {% comment %} Question explanation {% endcomment %}
-                            <div class="accordion mt-2" id="e{{ question.pk }}">
+                            <div class="accordion mt-2" id="e{{ question.id }}">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed"
                                                 type="button"
                                                 data-bs-toggle="collapse"
-                                                data-bs-target="#collapse-{{ question.pk }}"
+                                                data-bs-target="#collapse-{{ question.id }}"
                                                 aria-expanded="false"
-                                                aria-controls="collapse-{{ question.pk }}">Mostrar Resposta</button>
+                                                aria-controls="collapse-{{ question.id }}">Mostrar Resposta</button>
                                     </h2>
-                                    <div id="collapse-{{ question.pk }}"
+                                    <div id="collapse-{{ question.id }}"
                                          class="accordion-collapse collapse"
-                                         data-bs-parent="#e{{ question.pk }}">
+                                         data-bs-parent="#e{{ question.id }}">
                                         <div class="accordion-body">
                                             {% for choice in question.choices.all %}
                                                 {% if choice.is_correct %}
@@ -87,7 +87,7 @@
     {% if question_set.status != "pending" %}
         <div class="mt-3">
             <hr>
-            <form action="{% url "question_set_delete" question_set_id=question_set.pk %}"
+            <form action="{% url "question_set_delete" question_set_id=question_set.id %}"
                   method="post"
                   onsubmit="return confirm('Tem certeza que deseja excluir as questões?');">
                 {% csrf_token %}

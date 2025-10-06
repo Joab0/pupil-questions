@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
+from apps.common.models import BaseDBModel
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -25,16 +27,15 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(BaseDBModel, AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "usuário"
         verbose_name_plural = "usuários"
-        ordering = ["pk"]
+        ordering = ["-id"]
 
     email = models.EmailField("E-mail", unique=True)
     first_name = models.CharField("Nome", max_length=30)
     last_name = models.CharField("Sobrenome", max_length=30)
-    created_at = models.DateTimeField("Data de criação", auto_now_add=True)
     ip = models.GenericIPAddressField(null=True)
     updated_at = models.DateTimeField("Última alteração", auto_now=True)
     is_active = models.BooleanField("Ativo", default=True)

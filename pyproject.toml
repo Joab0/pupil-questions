@@ -11,10 +11,12 @@ dependencies = [
     "django-filter>=25.1",
     "django-ipware>=7.0.1",
     "django-turnstile>=0.1.2",
+    "django-ulidfield>=0.1.0",
     "gunicorn>=23.0.0",
     "markdown>=3.9",
     "openai>=1.109.1",
     "pydantic>=2.11.9",
+    "python-ulid>=3.1.0",
 ]
 
 
@@ -61,6 +63,10 @@ line-ending = "auto"
 [tool.pyright]
 typeCheckingMode = "standard"
 # UnannotatedClassAttribute = false
+reportIncompatibleVariableOverride = false
+
+[[tool.pyright.executionEnvironments]]
+root = "backend"
 
 [tool.djlint]
 ignore = "H021"

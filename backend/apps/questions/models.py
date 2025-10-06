@@ -5,12 +5,13 @@ from typing import TYPE_CHECKING
 from django.db import models
 
 from apps.accounts.models import User
+from apps.common.models import BaseDBModel
 
 if TYPE_CHECKING:
     from django.db.models.fields.related_descriptors import RelatedManager
 
 
-class QuestionSet(models.Model):
+class QuestionSet(BaseDBModel):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="question_sets", verbose_name="Usuário"
     )
@@ -18,7 +19,6 @@ class QuestionSet(models.Model):
     description = models.CharField(verbose_name="Descrição", max_length=512, null=True)
     prompt = models.TextField(verbose_name="Prompt")
     model = models.CharField(verbose_name="Nome do modelo", max_length=100, null=True)
-    created_at = models.DateTimeField(verbose_name="Data de criação", auto_now_add=True)
     status = models.CharField(
         verbose_name="Status",
         max_length=20,
@@ -35,13 +35,13 @@ class QuestionSet(models.Model):
     class Meta:
         verbose_name = "Conjunto de questões"
         verbose_name_plural = "Conjuntos de questões"
-        ordering = ["-created_at"]
+        ordering = ["-id"]
 
     def __str__(self) -> str:
         return self.title
 
 
-class Question(models.Model):
+class Question(BaseDBModel):
     question_set = models.ForeignKey(
         QuestionSet,
         on_delete=models.CASCADE,
@@ -57,7 +57,6 @@ class Question(models.Model):
         ],
     )
     explanation = models.TextField(verbose_name="Explicação")
-    created_at = models.DateTimeField(verbose_name="Data de criação", auto_now_add=True)
 
     if TYPE_CHECKING:
         choices: RelatedManager["Choice"]
@@ -70,7 +69,7 @@ class Question(models.Model):
         return self.text
 
 
-class Choice(models.Model):
+class Choice(BaseDBModel):
     question = models.ForeignKey(
         Question, related_name="choices", on_delete=models.CASCADE, verbose_name="Questão"
     )
@@ -85,13 +84,12 @@ class Choice(models.Model):
         return self.text
 
 
-class PracticeSession(models.Model):
+class PracticeSession(BaseDBModel):
     question_set = models.ForeignKey(
         QuestionSet, on_delete=models.CASCADE, verbose_name="Conjunto de Questões"
     )
     questions_order = models.JSONField(verbose_name="Ordem das questões")  # ID list
     current_index = models.SmallIntegerField(verbose_name="Índice atual", default=0)
-    created_at = models.DateTimeField(verbose_name="Criado em", auto_now_add=True)
     finished_at = models.DateTimeField(verbose_name="Finalizado em", null=True)
 
     if TYPE_CHECKING:
@@ -116,7 +114,7 @@ class PracticeSession(models.Model):
         return unanswered[0] if unanswered else None
 
 
-class PracticeAnswer(models.Model):
+class PracticeAnswer(BaseDBModel):
     session = models.ForeignKey(
         PracticeSession, on_delete=models.CASCADE, related_name="answers", verbose_name="Sessão"
     )
@@ -126,3 +124,6 @@ class PracticeAnswer(models.Model):
     class Meta:
         verbose_name = "Resposta da prática"
         verbose_name_plural = "Respostas das práticas"
+
+    def __str__(self) -> str:
+        return self.choice.text

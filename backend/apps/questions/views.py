@@ -50,7 +50,7 @@ def add_question_set_view(request: HttpRequest):
                 # Use on_commit hook to avoid task run before save
                 transaction.on_commit(
                     lambda: generate_questions_task.delay(
-                        question_set.pk, data["prompt"], data["questions_number"]
+                        question_set.id, data["prompt"], data["questions_number"]
                     ),
                 )
                 messages.success(
@@ -58,7 +58,7 @@ def add_question_set_view(request: HttpRequest):
                     "O conjunto de questões foi criado com sucesso. "
                     "Aguarde até que as questões sejam geradas.",
                 )
-                return redirect("question_set", question_set_id=question_set.pk)
+                return redirect("question_set", question_set_id=question_set.id)
         else:
             messages.error(request, "Não foi possível criar o conjunto de questões.")
     else:
@@ -77,7 +77,7 @@ def question_set_view(request: HttpRequest, question_set_id: int):
         QuestionSet.objects.prefetch_related(
             Prefetch("questions", queryset=Question.objects.prefetch_related("choices"))
         ),
-        pk=question_set_id,
+        id=question_set_id,
         user=request.user,
     )
 
@@ -100,20 +100,20 @@ def question_set_view(request: HttpRequest, question_set_id: int):
 @login_required
 def question_set_delete_view(request: HttpRequest, question_set_id: int):
     if request.method == "POST":
-        question_set = get_object_or_404(QuestionSet, user=request.user, pk=question_set_id)
+        question_set = get_object_or_404(QuestionSet, user=request.user, id=question_set_id)
         question_set.delete()
     return redirect("question_sets")
 
 
 @login_required
 def question_set_status_view(request: HttpRequest, question_set_id: int):
-    question_set = get_object_or_404(QuestionSet, user=request.user, pk=question_set_id)
+    question_set = get_object_or_404(QuestionSet, user=request.user, id=question_set_id)
     return JsonResponse({"status": question_set.status})
 
 
 @login_required
 def question_set_start_practice_view(request: HttpRequest, question_set_id: int):
-    question_set = get_object_or_404(QuestionSet, pk=question_set_id, user=request.user)
+    question_set = get_object_or_404(QuestionSet, id=question_set_id, user=request.user)
 
     # Get current practice or create a new
     session, created = PracticeSession.objects.get_or_create(
@@ -127,13 +127,13 @@ def question_set_start_practice_view(request: HttpRequest, question_set_id: int)
 
     # No order or restart
     if created or not session.questions_order:
-        questions = list(question_set.questions.values_list("pk", flat=True))  # pyright: ignore[reportAttributeAccessIssue]
+        questions = list(question_set.questions.values_list("id", flat=True))  # pyright: ignore[reportAttributeAccessIssue]
         random.shuffle(questions)
         session.questions_order = questions
         session.current_index = 0
         session.save()
 
-    return redirect("question_set_practice", question_set_id=question_set.pk, session_id=session.pk)
+    return redirect("question_set_practice", question_set_id=question_set.id, session_id=session.id)
 
 
 @login_required
@@ -146,7 +146,7 @@ def question_set_practice_view(request: HttpRequest, question_set_id: int, sessi
     )
 
     question_id = session.questions_order[session.current_index]
-    question = Question.objects.prefetch_related("choices").get(pk=question_id)
+    question = Question.objects.prefetch_related("choices").get(id=question_id)
 
     if request.method == "POST":
         choice_id = request.POST.get("choice")
@@ -172,17 +172,17 @@ def question_set_practice_view(request: HttpRequest, question_set_id: int, sessi
                 session.save()
                 return redirect(
                     "question_set_practice_results",
-                    question_set_id=session.question_set.pk,
-                    session_id=session.pk,
+                    question_set_id=session.question_set.id,
+                    session_id=session.id,
                 )
 
         session.save()
         return redirect(
-            "question_set_practice", question_set_id=session.question_set.pk, session_id=session.pk
+            "question_set_practice", question_set_id=session.question_set.id, session_id=session.id
         )
 
     answer = session.answers.filter(question=question).first()  # pyright: ignore[reportAttributeAccessIssue]
-    selected_choice_id = answer.choice.pk if answer else None
+    selected_choice_id = answer.choice.id if answer else None
     progress = int(((session.current_index + 1) / len(session.questions_order)) * 100)
 
     return render(
@@ -217,7 +217,7 @@ def question_set_practice_results_view(request: HttpRequest, question_set_id: in
                 ),
             ),
         ),
-        pk=session_id,
+        id=session_id,
         question_set_id=question_set_id,
     )
     answers = session.answers
@@ -225,12 +225,12 @@ def question_set_practice_results_view(request: HttpRequest, question_set_id: in
 
     duration = session.finished_at - session.created_at
 
-    answers = {a.question.pk: a for a in session.answers.all()}
+    answers = {a.question.id: a for a in session.answers.all()}
 
     results = []
     correct = 0
     for q_id in session.questions_order:
-        question = next(q for q in question_set.questions.all() if q.pk == q_id)
+        question = next(q for q in question_set.questions.all() if q.id == q_id)
         answer = answers[q_id]
         is_correct = answer.choice.is_correct
 

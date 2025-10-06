@@ -277,6 +277,19 @@ wheels = [
 ]
 
 [[package]]
+name = "django-ulidfield"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "python-ulid" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5f/45/2006f76ed1d09b0a0a5ad9f2fb8823f8da0fa17de9ba8295a390d8150f9e/django_ulidfield-0.1.0.tar.gz", hash = "sha256:890d3143d604ff7f67647bff91482c5e6d8c8deaa77b272da37d9b1ae98f2418", size = 5132, upload-time = "2025-07-24T16:57:31.871Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e9/c3/9a69c26e00ce1d8f46bc6ccb9153f6e5468fbd4deacfc83001ee09b9948e/django_ulidfield-0.1.0-py3-none-any.whl", hash = "sha256:ad03f9c8c2677a56da66c8211d2834fa4ef54fe1b453916e9400061a7d173f03", size = 5654, upload-time = "2025-07-24T16:57:30.979Z" },
+]
+
+[[package]]
 name = "djlint"
 version = "1.36.4"
 source = { registry = "https://pypi.org/simple" }
@@ -530,10 +543,12 @@ dependencies = [
     { name = "django-filter" },
     { name = "django-ipware" },
     { name = "django-turnstile" },
+    { name = "django-ulidfield" },
     { name = "gunicorn" },
     { name = "markdown" },
     { name = "openai" },
     { name = "pydantic" },
+    { name = "python-ulid" },
 ]
 
 [package.dev-dependencies]
@@ -552,10 +567,12 @@ requires-dist = [
     { name = "django-filter", specifier = ">=25.1" },
     { name = "django-ipware", specifier = ">=7.0.1" },
     { name = "django-turnstile", specifier = ">=0.1.2" },
+    { name = "django-ulidfield", specifier = ">=0.1.0" },
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "markdown", specifier = ">=3.9" },
     { name = "openai", specifier = ">=1.109.1" },
     { name = "pydantic", specifier = ">=2.11.9" },
+    { name = "python-ulid", specifier = ">=3.1.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -628,6 +645,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/9e/60/da4426c3e9aee56f08b24091a9e85a0414260f928f97afd0013dfbd0332f/python_ipware-3.0.0.tar.gz", hash = "sha256:9117b1c4dddcb5d5ca49e6a9617de2fc66aec2ef35394563ac4eecabdf58c062", size = 16609, upload-time = "2024-04-19T20:00:58.938Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/08/bd/ccd7416fdb30f104ddf6cfd8ee9f699441c7d9880a26f9b3089438adee05/python_ipware-3.0.0-py3-none-any.whl", hash = "sha256:fc936e6e7ec9fcc107f9315df40658f468ac72f739482a707181742882e36b60", size = 10761, upload-time = "2024-04-19T20:00:57.171Z" },
+]
+
+[[package]]
+name = "python-ulid"
+version = "3.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/40/7e/0d6c82b5ccc71e7c833aed43d9e8468e1f2ff0be1b3f657a6fcafbb8433d/python_ulid-3.1.0.tar.gz", hash = "sha256:ff0410a598bc5f6b01b602851a3296ede6f91389f913a5d5f8c496003836f636", size = 93175, upload-time = "2025-08-18T16:09:26.305Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6c/a0/4ed6632b70a52de845df056654162acdebaf97c20e3212c559ac43e7216e/python_ulid-3.1.0-py3-none-any.whl", hash = "sha256:e2cdc979c8c877029b4b7a38a6fba3bc4578e4f109a308419ff4d3ccf0a46619", size = 11577, upload-time = "2025-08-18T16:09:25.047Z" },
 ]
 
 [[package]]

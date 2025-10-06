@@ -4,7 +4,7 @@
     <h2 class="mb-3">Resultados da prática</h2>
     <div class="mb-3 d-flex flex-column">
         <span>
-            {% icon "journals" "me-2" %}<strong>Questões:</strong> <a href="{% url "question_set" question_set_id=question_set.pk %}">{{ question_set.title }}</a>
+            {% icon "journals" "me-2" %}<strong>Questões:</strong> <a href="{% url "question_set" question_set_id=question_set.id %}">{{ question_set.title }}</a>
         </span>
         <span>
             {% icon "stopwatch" "me-2" %}<strong>Duração:</strong> {{ session.created_at|timesince:session.finished_at }}
@@ -26,7 +26,7 @@
                                     <div class="list-group-item{% if choice.is_correct %} list-group-item-success{% endif %}">
                                         <input class="form-check-input me-1"
                                                type="radio"
-                                               name="choice-{{ question.pk }}"
+                                               name="choice-{{ question.id }}"
                                                value="{{ forloop.counter }}"
                                                {% if result.selected_choice == choice %}checked{% endif %}
                                                disabled />

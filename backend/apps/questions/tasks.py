@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 def generate_questions_task(question_set_id: int, prompt: str, questions_number: int) -> None:
     log.info(f"Generate questions task started for question set {question_set_id}")
 
-    question_set = QuestionSet.objects.get(pk=question_set_id)
+    question_set = QuestionSet.objects.get(id=question_set_id)
 
     try:
         response = generate_questions(prompt, questions_number)

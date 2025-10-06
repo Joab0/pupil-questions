@@ -23,8 +23,8 @@
                             <input class="form-check-input me-1"
                                    type="radio"
                                    name="choice"
-                                   value="{{ choice.pk }}"
-                                   {% if choice.pk == selected_choice_id %}checked{% endif %}>
+                                   value="{{ choice.id }}"
+                                   {% if choice.id == selected_choice_id %}checked{% endif %}>
                             {{ forloop.counter0|index_letter }}. {{ choice.text }}
                         </label>
                     {% endfor %}
