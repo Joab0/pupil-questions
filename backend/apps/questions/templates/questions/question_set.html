@@ -1,5 +1,5 @@
 {% extends "components/layout.html" %}
-{% load icons index_letter %}
+{% load icons index_letter markdown %}
 {% block content %}
     <h2 class="mb-3">{{ question_set.title }}</h2>
     {% if question_set.status == "pending" %}
@@ -39,16 +39,10 @@
                 <div class="col-12 col-lg-6">
                     <div class="card shadow-sm bg-dark-subtle">
                         <div class="card-body">
-                            <h5 class="card-title">{{ forloop.counter }}. {{ question.text }}</h5>
+                            <h5 class="card-title">{{ forloop.counter|stringformat:"s"|add:"\. "|add:question.text|markdown }}</h5>
                             <div class="list-group">
                                 {% for choice in question.choices.all %}
-                                    <label class="list-group-item">
-                                        <input class="form-check-input me-1"
-                                               type="radio"
-                                               name="choice-{{ question.id }}"
-                                               value="{{ forloop.counter }}" />
-                                        {{ forloop.counter0|index_letter|upper }}. {{ choice.text }}
-                                    </label>
+                                    <div class="list-group-item">{{ forloop.counter0|index_letter|upper }}. {{ choice.text }}</div>
                                 {% endfor %}
                             </div>
                             {% comment %} Question explanation {% endcomment %}

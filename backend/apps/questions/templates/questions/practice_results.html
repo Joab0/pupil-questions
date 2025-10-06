@@ -1,5 +1,5 @@
 {% extends "components/layout.html" %}
-{% load icons index_letter %}
+{% load icons index_letter markdown %}
 {% block content %}
     <h2 class="mb-3">Resultados da prática</h2>
     <div class="mb-3 d-flex flex-column">
@@ -20,7 +20,7 @@
                 <div class="col-12 col-lg-6">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">{{ forloop.counter }}. {{ question.text }}</h5>
+                            <h5 class="card-title">{{ forloop.counter|stringformat:"s"|add:"\. "|add:question.text|markdown }}</h5>
                             <div class="list-group mb-3">
                                 {% for choice in question.choices.all %}
                                     <div class="list-group-item{% if choice.is_correct %} list-group-item-success{% endif %}">
