@@ -1,6 +1,33 @@
 {% extends "components/layout.html" %}
 {% load icons index_letter %}
 {% block content %}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "scratchedChoiceIds";
+            let scratched = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+            scratched.forEach(id => {
+                const label = document.querySelector(`[data-choice-id="${id}"]`)?.closest("label");
+                if (label) label.querySelector(".choice-text")?.classList.add("text-decoration-line-through");
+            });
+            document.querySelectorAll(".scratch-btn").forEach(btn => {
+                btn.addEventListener("click", e => {
+                    e.stopPropagation(); // Avoid check ratio
+                    const id = btn.dataset.choiceId;
+                    const label = btn.closest("label");
+                    const span = label.querySelector(".choice-text");
+                    span.classList.toggle("text-decoration-line-through");
+
+                    if (scratched.includes(id)) {
+                        scratched = scratched.filter(x => x !== id);
+                    } else {
+                        scratched.push(id);
+                        if (scratched.length > 100) scratched.shift();
+                    }
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(scratched));
+                    });
+            });
+        });
+    </script>
     <h2 class="mb-3">Praticar {{ session.question_set.title }}</h2>
     <div class="card shadow-sm mb-4">
         <div class="card-body">
@@ -19,13 +46,20 @@
                 {% csrf_token %}
                 <div class="list-group mb-3">
                     {% for choice in question.choices.all %}
-                        <label class="list-group-item">
-                            <input class="form-check-input me-1"
-                                   type="radio"
-                                   name="choice"
-                                   value="{{ choice.id }}"
-                                   {% if choice.id == selected_choice_id %}checked{% endif %}>
-                            {{ forloop.counter0|index_letter }}. {{ choice.text }}
+                        <label class="list-group-item d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-2"
+                                       type="radio"
+                                       name="choice"
+                                       value="{{ choice.id }}"
+                                       {% if choice.id == selected_choice_id %}checked{% endif %}>
+                                <span class="choice-text mb-0">{{ forloop.counter0|index_letter|upper }}. {{ choice.text }}</span>
+                            </div>
+                            <button type="button"
+                                    class="btn btn-sm border-o ms-2 scratch-btn"
+                                    data-choice-id="{{ session.id }}-{{ choice.id }}">
+                                <i class="bi bi-slash-circle"></i>
+                            </button>
                         </label>
                     {% endfor %}
                 </div>
