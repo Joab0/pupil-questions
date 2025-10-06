@@ -73,32 +73,32 @@ def _shuffle_choices(questions: list[Question]) -> None:
 
 
 def generate_questions(prompt: str, count: int) -> GenerateQuestionSetResponse:
-    system_prompt = """You are a helpful assistant specialized in creating educational
+    system_prompt = f"""You are a helpful assistant specialized in creating educational
     multiple-choice questions in Portuguese (Brazil).
-    Ensure questions are clear, concise, and accurate."""
+    The user will provide a prompt and you will parse and create {count} questions.
+    Each question must have 4 alternatives and an explanation.
+    The model supports Markdown formatting, including headings, lists, code blocks, tables,
+    and inline formatting.
 
-    prompt = f"""Generate {count} multiple-choice questions basend on prompt "{prompt}".
-    Each question must include:
-    - A clear question statement
-    - 4 answer options
-    - Indication of the correct answer option
-    - Explanation
-    Respond in JSON format, like this:
+    EXAMPLE JSON OUTPUT:
     {{
-        "title": "Short title",
+        "title": "Sample Practice Set",
         "description": "Short description",
         "questions": [
             {{
-                "text": "...",
+            "text": "What is the capital of France?",
                 "choices": [
-                    {{"text": "choice text", "is_correct": true}},
-                    ...
+                    {{"text": "Berlin", "is_correct": false }},
+                    {{"text": "Madrid", "is_correct": false }},
+                    {{"text": "Paris", "is_correct": true }},
+                    {{"text": "Rome", "is_correct": false }}
                 ],
-                "explanation": "..."
+                "explanation": "Paris is the capital and most populous city of France."
             }}
         ]
     }}
     """
+
     response = client.chat.completions.create(
         model=settings.AI_SERVICE_MODEL,
         messages=[
