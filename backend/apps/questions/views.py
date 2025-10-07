@@ -103,6 +103,21 @@ def question_set_status_view(request: HttpRequest, question_set_id: int):
 
 
 @login_required
+def user_practices_view(request: HttpRequest):
+    sessions = (
+        PracticeSession.objects.filter(question_set__user=request.user)
+        .order_by("finished_at")
+        .prefetch_related("question_set")
+    )
+
+    return render(
+        request,
+        "questions/practices.html",
+        context={"title": "Histórico de práticas", "sessions": sessions},
+    )
+
+
+@login_required
 def question_set_start_practice_view(request: HttpRequest, question_set_id: int):
     question_set = get_object_or_404(QuestionSet, id=question_set_id, user=request.user)
 

@@ -17,6 +17,11 @@ urlpatterns = [
         name="question_set_start_practice",
     ),
     path(
+        "practices",
+        views.user_practices_view,
+        name="user_practices",
+    ),
+    path(
         "<ulid:question_set_id>/practices/<ulid:session_id>",
         views.question_set_practice_view,
         name="question_set_practice",
