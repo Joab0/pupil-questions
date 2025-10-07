@@ -14,16 +14,6 @@ from .tasks import generate_questions_task
 
 
 @login_required
-def question_sets_view(request: HttpRequest):
-    question_sets = QuestionSet.objects.filter(user=request.user)
-    return render(
-        request,
-        "questions/question_sets.html",
-        context={"title": "Minhas Questões", "question_sets": question_sets},
-    )
-
-
-@login_required
 def add_question_set_view(request: HttpRequest):
     if request.method == "POST":
         form = QuestionSetAddForm(request.POST)
@@ -102,7 +92,8 @@ def question_set_delete_view(request: HttpRequest, question_set_id: int):
     if request.method == "POST":
         question_set = get_object_or_404(QuestionSet, user=request.user, id=question_set_id)
         question_set.delete()
-    return redirect("question_sets")
+        messages.success(request, "O conjunto de questões foi removido com sucesso")
+    return redirect("dashboard")
 
 
 @login_required
