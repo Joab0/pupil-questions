@@ -27,10 +27,15 @@ def add_question_set_view(request: HttpRequest):
                 )
             else:
                 data = form.cleaned_data
+
+                temp_title = data["prompt"]
+                if len(temp_title) > 20:
+                    temp_title = temp_title[:20] + "..."
+
                 question_set = QuestionSet.objects.create(
                     user=request.user,
                     # Temporary title
-                    title=data["prompt"][:30],
+                    title=temp_title,
                     prompt=data["prompt"],
                     status="pending",
                 )
@@ -42,11 +47,6 @@ def add_question_set_view(request: HttpRequest):
                     lambda: generate_questions_task.delay(
                         question_set.id, data["prompt"], data["questions_number"]
                     ),
-                )
-                messages.success(
-                    request,
-                    "O conjunto de questões foi criado com sucesso. "
-                    "Aguarde até que as questões sejam geradas.",
                 )
                 return redirect("question_set", question_set_id=question_set.id)
         else:
