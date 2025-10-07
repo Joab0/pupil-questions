@@ -5,14 +5,18 @@ register = template.Library()
 
 
 @register.inclusion_tag("components/nav_link.html", takes_context=True)
-def nav_link(context, icon_name, label, path_name):
+def nav_link(context: dict, label: str, path_name: str, icon_name: str | None = None):
     request = context["request"]
-    url = reverse(path_name)
+    if path_name.startswith("/"):
+        url = path_name
+    else:
+        url = reverse(path_name)
+
     active = " active" if request.path == url else ""
     return {
-        "icon_name": icon_name,
         "label": label,
         "url": url,
+        "icon_name": icon_name,
         "active": active,
     }
 

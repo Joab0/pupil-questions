@@ -1,8 +1,10 @@
 {% load icons %}
-<a class="nav-link{{ active }}" href="{{ url }}">
-    <div class="d-flex gap-2">
-        {% icon icon_name %}
-        {% comment %} Truncate text here to avoid sidebar readjustment while opening {% endcomment %}
+<a class="nav-link{{ active }} rounded{% if not icon_name %} no-icon{% endif %}"
+   href="{{ url }}">
+    <div class="d-flex gap-2" style="min-width: 0;">
+        {% if icon_name %}
+            {% icon icon_name %}
+        {% endif %}
         <span class="text-truncate">{{ label }}</span>
     </div>
 </a>

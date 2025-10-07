@@ -47,6 +47,14 @@ button.toggle-password:focus {
   width: 80px;
 }
 
+.sidebar.collapsed .no-icon {
+  display: none;
+}
+
+.sidebar.collapsed span {
+  display: none;
+}
+
 .sidebar.collapsed .nav-link span {
   display: none;
 }
@@ -62,6 +70,16 @@ button.toggle-password:focus {
 
 .sidebar.collapsed img {
   width: 48px;
+}
+
+.nav-link {
+  width: 100%; /* To allow truncate */
+  text-decoration: none !important;
+  color: var(--bs-heading-color);
+}
+
+.nav-link.active {
+  background-color: var(--bs-secondary);
 }
 
 .btn-ai {

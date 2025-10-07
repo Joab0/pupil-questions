@@ -1,7 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
 from apps.common.models import BaseDBModel
+
+if TYPE_CHECKING:
+    from django.db.models.fields.related_descriptors import RelatedManager
+
+    from apps.questions.models import QuestionSet
 
 
 class UserManager(BaseUserManager):
@@ -42,6 +51,9 @@ class User(BaseDBModel, AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField("Staff", default=False)
 
     objects = UserManager()
+
+    if TYPE_CHECKING:
+        question_sets: RelatedManager[QuestionSet]
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]

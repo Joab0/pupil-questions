@@ -1,15 +1,14 @@
 {% load menu %}
-<style>
-.nav-link {
-  text-decoration: none !important;
-  color: var(--bs-heading-color);
-}
-.nav-link.active {
-  background-color: var(--bs-secondary);
-}
-</style>
-<nav class="nav flex-column">
-  {% nav_link "grid-1x2" "Dashboard" "dashboard" %}
-  {% nav_link "journals" "Minhas Questões" "question_sets" %}
-  {% nav_link "journal-plus" "Criar Questões" "add_question_set" %}
+<nav class="nav flex-column px-3">
+  {% nav_link "Dashboard" "dashboard" "grid-1x2" %}
+  {% nav_link "Gerar Questões" "add_question_set" "stars" %}
+  <div class="mt-3 mb-1">
+    <span class="fs-6 text-secondary">Questões</span>
+  </div>
+  {% for question_set in user_question_sets %}
+    {% url "question_set" question_set_id=question_set.id as question_set_url %}
+    {% nav_link question_set.title question_set_url %}
+  {% empty %}
+    <span class="text-muted small">Nenhum conjunto de questões</span>
+  {% endfor %}
 </nav>
