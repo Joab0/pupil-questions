@@ -17,6 +17,7 @@ dependencies = [
     "markdown>=3.9",
     "openai>=1.109.1",
     "pydantic>=2.11.9",
+    "pygments>=2.19.2",
     "python-ulid>=3.1.0",
 ]
 
