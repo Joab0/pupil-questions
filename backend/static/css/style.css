@@ -38,7 +38,7 @@ button.toggle-password:focus {
 
 /* Custom styles */
 .sidebar {
-  width: 240px;
+  width: 300px;
   transition: width 0.3s ease;
   overflow: hidden;
 }
