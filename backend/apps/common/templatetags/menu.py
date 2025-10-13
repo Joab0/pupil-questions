@@ -1,11 +1,26 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from django import template
 from django.urls import reverse
+
+from apps.questions.models import QuestionSet
+
+if TYPE_CHECKING:
+    pass
+
 
 register = template.Library()
 
 
 @register.inclusion_tag("components/nav_link.html", takes_context=True)
-def nav_link(context: dict, label: str, path_name: str, icon_name: str | None = None):
+def nav_link(
+    context: dict,
+    label: str,
+    path_name: str,
+    icon_name: str | None = None,
+):
     request = context["request"]
     if path_name.startswith("/"):
         url = path_name
@@ -17,6 +32,29 @@ def nav_link(context: dict, label: str, path_name: str, icon_name: str | None = 
         "label": label,
         "url": url,
         "icon_name": icon_name,
+        "active": active,
+    }
+
+
+@register.inclusion_tag("components/nav_link.html", takes_context=True)
+def question_set_nav_link(context: dict, question_set: QuestionSet):
+    request = context["request"]
+
+    url = reverse("question_set", kwargs={"question_set_id": question_set.id})
+    actions = [
+        {
+            "icon": "trash",
+            "label": "Excluir",
+            "url": reverse("question_set_delete", kwargs={"question_set_id": question_set.id}),
+            "danger": True,
+        },
+    ]
+
+    active = " active" if request.path == url else ""
+    return {
+        "label": question_set.title,
+        "url": url,
+        "actions": actions,
         "active": active,
     }
 
