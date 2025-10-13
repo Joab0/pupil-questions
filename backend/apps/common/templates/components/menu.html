@@ -7,7 +7,6 @@
     <span class="fs-6 text-secondary">Questões</span>
   </div>
   {% for question_set in user_question_sets %}
-    {% url "question_set" question_set_id=question_set.id as question_set_url %}
     {% question_set_nav_link question_set %}
   {% empty %}
     <span class="text-muted small">Nenhum conjunto de questões</span>
