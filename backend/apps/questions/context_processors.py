@@ -8,5 +8,7 @@ if TYPE_CHECKING:
 
 def user_question_sets(request: HttpRequest):
     if request.user.is_authenticated:
-        return {"user_question_sets": request.user.question_sets.all()}  # pyright: ignore
+        return {
+            "user_question_sets": request.user.question_sets.order_by("-pinned_at", "-id").all()  # pyright: ignore
+        }
     return {"user_question_sets": []}
