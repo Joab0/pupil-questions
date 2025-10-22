@@ -43,6 +43,11 @@ def question_set_nav_link(context: dict, question_set: QuestionSet):
     url = reverse("question_set", kwargs={"question_set_id": question_set.id})
     actions = [
         {
+            "icon": "pin-angle",
+            "label": "Fixar" if question_set.pinned_at is None else "Desfixar",
+            "url": reverse("question_set_toggle_pin", kwargs={"question_set_id": question_set.id}),
+        },
+        {
             "icon": "trash",
             "label": "Excluir",
             "url": reverse("question_set_delete", kwargs={"question_set_id": question_set.id}),
@@ -51,12 +56,17 @@ def question_set_nav_link(context: dict, question_set: QuestionSet):
     ]
 
     active = " active" if request.path == url else ""
-    return {
+    context = {
         "label": question_set.title,
         "url": url,
         "actions": actions,
         "active": active,
     }
+
+    if question_set.pinned_at:
+        context["icon_name"] = "pin-fill"
+
+    return context
 
 
 @register.inclusion_tag("components/menu.html", takes_context=True)

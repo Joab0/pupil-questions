@@ -28,6 +28,7 @@ class QuestionSet(BaseDBModel):
             ("error", "Erro"),
         ],
     )
+    pinned_at = models.DateTimeField(verbose_name="Fixado em", null=True)
 
     if TYPE_CHECKING:
         questions: RelatedManager["Question"]

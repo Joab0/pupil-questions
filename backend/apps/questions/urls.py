@@ -9,6 +9,11 @@ urlpatterns = [
         "<ulid:question_set_id>/delete", views.question_set_delete_view, name="question_set_delete"
     ),
     path(
+        "<ulid:question_set_id>/toggle-pin",
+        views.question_set_toggle_pin_view,
+        name="question_set_toggle_pin",
+    ),
+    path(
         "<ulid:question_set_id>/status", views.question_set_status_view, name="question_set_status"
     ),
     path(

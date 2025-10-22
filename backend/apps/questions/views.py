@@ -97,6 +97,19 @@ def question_set_delete_view(request: HttpRequest, question_set_id: int):
 
 
 @login_required
+def question_set_toggle_pin_view(request: HttpRequest, question_set_id: int):
+    if request.method == "POST":
+        question_set = get_object_or_404(QuestionSet, user=request.user, id=question_set_id)
+        if question_set.pinned_at is None:
+            question_set.pinned_at = timezone.now()
+        else:
+            question_set.pinned_at = None
+
+        question_set.save(update_fields=["pinned_at"])
+    return redirect("dashboard")
+
+
+@login_required
 def question_set_status_view(request: HttpRequest, question_set_id: int):
     question_set = get_object_or_404(QuestionSet, user=request.user, id=question_set_id)
     return JsonResponse({"status": question_set.status})
