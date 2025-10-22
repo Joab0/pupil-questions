@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+
+  celery:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    working_dir: /app/backend
+    command: uv run celery -A core worker --loglevel=INFO --beat
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
