@@ -59,6 +59,10 @@ button.toggle-password:focus {
   display: none;
 }
 
+.sidebar.collapsed .nav-link .dropdown {
+  display: none;
+}
+
 /* Align the icons in the center */
 .sidebar.collapsed .nav-link .d-flex {
   justify-content: center;
